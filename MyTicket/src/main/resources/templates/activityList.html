@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ActivityList</title>
+
+    <link rel="stylesheet" href="../static/css/uikit.min.css"/>
+    <link rel="stylesheet" href="../static/css/uikit-custom.css">
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/uikit.min.js"></script>
+    <script src="../static/js/uikit-icons.min.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+
+<ul class="uk-list">
+
+    <li class="uk-container ">
+        <div style="height: 400px" class="uk-card uk-card-default uk-grid-collapse uk-margin" uk-grid>
+            <div style="width: 300px" class="uk-card-media-left uk-cover-container">
+                <img src="../static/image/lrh.jpg" alt="" uk-cover>
+                <canvas width="300" height="400"></canvas>
+            </div>
+            <div>
+                <div style="width: 800px" class="uk-card-body">
+                    <h1 class="uk-card-title">李荣浩演唱会</h1>
+                    <p>位置：江苏省南京市鼓楼区珠江大厦<br>
+                        类别：演唱会<br>
+                        举办日期：2018-08-08<br>
+                        预定日期：2018-07-08
+                    </p>
+                    <p>
+                        每个人都有对故乡的记忆，思乡的情结犹如人的生物钟一般在某一时刻准时袭来。老街让我们找到了已经离开多年的故乡的感觉，更加真实地回到我们的眼前，安静纯朴的家乡生活回忆是可以平静任何浮躁的人的。老街那种种熟悉的气息，有时像是蹒跚学步时，有时像是第一手牵手的稚气…
+                    </p>
+                    <a style="width: 200px; margin-right: 0" class="uk-button uk-button-primary" id="buyTicket" href="#id" uk-toggle>购票</a>
+                </div>
+            </div>
+        </div>
+    </li>
+
+</ul>
+
+<div id="id" class="uk-modal-full" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+        <div class="uk-grid-collapse uk-child-width-1-3@s uk-flex-top" uk-grid>
+            <div class="uk-background-cover" style="background-image: url('../static/image/lrh.jpg');" uk-height-viewport></div>
+            <div style="width: 900px" class="uk-padding-large">
+                <div class="uk-text-center">
+                <h1>订单预定</h1>
+                </div>
+
+                <form class="uk-form-horizontal uk-margin-large">
+                    <ul class="uk-flex-top" uk-tab="animation: uk-animation-fade">
+                        <li style="width: 100px; margin-left: 180px ;margin-right: 190px" class="uk-active" ><a href="#">选座购买</a></li>
+                        <li style="width: 100px;" class="uk-active" ><a href="#">立即购买</a></li>
+                    </ul>
+
+                    <ul class="uk-switcher uk-margin">
+                        <li>
+
+                        </li>
+
+                        <li>
+
+                        </li>
+                    </ul>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="navigation">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("/checkLoginStatus",function(data,status){
+                if(data) {
+                    $("#loginButton").text("登出");
+                    $("#loginButton").attr("href", "/logout");
+                }else {
+                    $("#loginButton").text("登录");
+                    $("#loginButton").attr("href", "/login");
+                }
+            });
+        });
+
+        function showAlert(message) {
+            $("#message").text(message);
+            $("#alert").show().delay(1000).fadeOut();
+        }
+    </script>
+
+    <nav class="uk-navbar" uk-navbar>
+        <div class="uk-navbar-left">
+            <a class="uk-navbar-item uk-logo uk-light" href="/homepage">MyTicket</a>
+        </div>
+
+        <div class="uk-navbar-center">
+            <form class="uk-search uk-search-default uk-light">
+                <a href="" class="uk-search-icon-flip" uk-search-icon></a>
+                <input class="uk-search-input" type="search" placeholder="Search...">
+            </form>
+        </div>
+
+        <div class="uk-navbar-right uk-light">
+            <ul class="uk-navbar-nav">
+                <li class="uk-active"><a id="loginButton" href="/login">登录</a></li>
+                <li class="uk-active"><a id="registerButton" href="/register">注册</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div style="display: none" id="alert" class="uk-alert-warning uk-text-center" uk-alert>
+        <p id="message"></p>
+    </div>
+</div>
+
+</body>
+</html>
