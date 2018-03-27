@@ -11,8 +11,12 @@ import java.util.List;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
+    private final ActivityRepository activityRepository;
+
     @Autowired
-    private ActivityRepository activityRepository;
+    public ActivityServiceImpl(ActivityRepository activityRepository) {
+        this.activityRepository = activityRepository;
+    }
 
     @Override
     public void createActivity(Activity activity) {

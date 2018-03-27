@@ -18,14 +18,18 @@ import java.util.Map;
 
 @Service
 public class StadiumServiceImpl implements StadiumService {
+    private final ReviewRepository reviewRepository;
+    private final StadiumRepository stadiumRepository;
+    private final ActivityService activityService;
+    private final OrdersService ordersService;
+
     @Autowired
-    private ReviewRepository reviewRepository;
-    @Autowired
-    private StadiumRepository stadiumRepository;
-    @Autowired
-    private ActivityService activityService;
-    @Autowired
-    private OrdersService ordersService;
+    public StadiumServiceImpl(ReviewRepository reviewRepository, StadiumRepository stadiumRepository, ActivityService activityService, OrdersService ordersService) {
+        this.reviewRepository = reviewRepository;
+        this.stadiumRepository = stadiumRepository;
+        this.activityService = activityService;
+        this.ordersService = ordersService;
+    }
 
     @Override
     public Stadium getStadium(String stadiumCode) {

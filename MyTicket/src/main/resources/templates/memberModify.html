@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>memberModify</title>
+
+    <link rel="stylesheet" href="../static/css/uikit.min.css"/>
+    <link rel="stylesheet" href="../static/css/uikit-custom.css">
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/uikit.min.js"></script>
+    <script src="../static/js/uikit-icons.min.js"></script>
+
+    <style>
+        .uk-form-label {
+            color: #999999;
+        }
+    </style>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="memberNav::memberNavigation"></div>
+
+<div style="background-color: #f8f8f8;position: absolute; left: 22%;width: 70%; height: 400px">
+<form style="margin-top: 70px;margin-left: 50px;margin-right: 50px" class="uk-form-horizontal uk-margin-large">
+
+    <div class="uk-margin">
+        <label class="uk-form-label">用户名</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" type="text" placeholder="请输入用户名">
+        </div>
+    </div>
+
+    <div class="uk-margin">
+        <label class="uk-form-label">密码</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" type="password" placeholder="请输入密码">
+        </div>
+    </div>
+
+    <div class="uk-margin">
+        <label class="uk-form-label">确认密码</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" type="password" placeholder="请再次输入密码">
+        </div>
+    </div>
+
+    <div class="uk-text-center">
+        <button style="margin-top: 30px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default">修改</button>
+    </div>
+</form>
+</div>
+
+</body>
+</html>

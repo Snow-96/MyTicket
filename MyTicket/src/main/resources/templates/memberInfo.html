@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MemberInfo</title>
+
+    <link rel="stylesheet" href="../static/css/uikit.min.css"/>
+    <link rel="stylesheet" href="../static/css/uikit-custom.css">
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/uikit.min.js"></script>
+    <script src="../static/js/uikit-icons.min.js"></script>
+
+    <style>
+        .uk-form-label{
+            color: #999999;
+            padding-left: 45px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="memberNav::memberNavigation"></div>
+
+<article style="position: absolute; left: 22%;width: 70%; height: 550px" class="uk-comment uk-comment-primary">
+    <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+        <div class="uk-width-auto">
+            <img class="uk-comment-avatar" src="../static/image/totoro.jpg" width="130" height="130" alt="">
+        </div>
+        <div class="uk-width-expand">
+            <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">Snow</a></h4>
+            <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                <li><a style="margin-top: 15px" href="#">511422713@qq.com</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="uk-comment-body">
+
+        <form style="margin-top: 20px" class="uk-form-horizontal uk-margin-large">
+
+            <div class="uk-margin">
+                <label class="uk-form-label">用户名</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${member.username}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">会员等级</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${member.level}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">会员积分</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${member.point}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">账户余额</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${member.balance}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">账户状态</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${member.isValid}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-text-center">
+                <button style="margin-top: 30px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default">注销会员</button>
+            </div>
+
+        </form>
+
+    </div>
+</article>
+
+</body>
+</html>

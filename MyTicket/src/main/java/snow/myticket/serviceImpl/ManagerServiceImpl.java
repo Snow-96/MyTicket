@@ -10,8 +10,12 @@ import java.util.Random;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
+    private final StadiumService stadiumService;
+
     @Autowired
-    private StadiumService stadiumService;
+    public ManagerServiceImpl(StadiumService stadiumService) {
+        this.stadiumService = stadiumService;
+    }
 
     @Override
     public void passStadiumApplication(Integer stadiumId) {

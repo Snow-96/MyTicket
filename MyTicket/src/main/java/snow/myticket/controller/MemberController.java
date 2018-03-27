@@ -2,17 +2,40 @@ package snow.myticket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import snow.myticket.bean.Member;
 import snow.myticket.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller("/member")
 public class MemberController {
+    private final MemberService memberService;
+
     @Autowired
-    private MemberService memberService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
+    @RequestMapping("/memberCenter")
+    public String getMemberCenter(){
+        return "memberCenter";
+    }
+
+    @RequestMapping("/memberInfo")
+    public String getMemberInfo(Model model, HttpServletRequest httpServletRequest){
+        String email = ((Member)httpServletRequest.getSession().getAttribute("member")).getEmail();
+        model.addAttribute("member",memberService.getMember(email));
+        return "memberInfo";
+    }
+
+    @RequestMapping("/memberModify")
+    public String getMemberModify(){
+        return "memberModify";
+    }
 
     @RequestMapping("/cancelMember")
     @ResponseBody

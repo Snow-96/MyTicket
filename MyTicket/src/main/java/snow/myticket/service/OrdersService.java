@@ -54,30 +54,20 @@ public interface OrdersService {
     /**
      * 在DB中创建订单实体
      * @param orders 订单实体
-     * @param coupon 优惠券实体
      * @return 订单实体
      */
-    Orders createOrders(Orders orders, Coupon coupon);
+    Orders createOrders(Orders orders);
 
     /**
-     * 取消订单,3天之内取消返还80%,否则返还50%
+     * 取消订单
      * @param orders 订单实体
-     * @return map信息
      */
-    Map<String,String> cancelOrders(Orders orders);
+    void cancelOrders(Orders orders);
 
     /**
-     * 支付订单/余额支付
-     * @param orders 订单实体
-     * @return map信息
+     * 支付订单
+     * @param ordersId 订单ID
+     * @param payDate 支付时间
      */
-    Map<String,String> payOrders(Orders orders);
-
-    /**
-     * 支付订单/账户支付
-     * @param orders 订单实体
-     * @param account 账号
-     * @return map信息
-     */
-    Map<String,String> payOrders(Orders orders, String account);
+    void payOrders(Integer ordersId, Date payDate);
 }

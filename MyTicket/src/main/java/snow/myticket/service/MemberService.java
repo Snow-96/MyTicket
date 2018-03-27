@@ -15,20 +15,6 @@ public interface MemberService {
     Member getMember(String email);
 
     /**
-     * 根据会员ID获取会员等级
-     * @param memberId 会员ID
-     * @return 会员等级
-     */
-    Integer getMemberLevel(Integer memberId);
-
-    /**
-     * 根据会员ID获取会员积分
-     * @param memberId 会员ID
-     * @return 会员积分
-     */
-    Integer getMemberPoints(Integer memberId);
-
-    /**
      * 在DB中创建会员实体
      * @param member 会员实体
      */
@@ -63,7 +49,7 @@ public interface MemberService {
     Orders reserveOrders(Orders orders, Coupon coupon);
 
     /**
-     * 取消预定
+     * 取消订单, 3天之内取消返还80%,否则返还50%
      * @param orders 订单实体
      * @return map信息
      */
@@ -85,41 +71,16 @@ public interface MemberService {
     Map<String,String> payByExternalAccount(Orders orders, String account);
 
     /**
-     * 会员升级
-     * @param memberId 会员ID
-     * @return 会员级别
+     * 兑换优惠券
+     * @param coupon 优惠券实体
+     * @param amount 数量
+     * @return 兑换后会员积分
      */
-    Integer upgrade(Integer memberId);
+    Integer convertCoupons(Coupon coupon, Integer amount);
 
     /**
-     * 增加会员积分
-     * @param memberId 会员ID
-     * @param point 会员增加积分
-     * @return 会员积分
+     * 使用优惠券
+     * @param couponId 优惠券ID
      */
-    Integer addPoints(Integer memberId, int point);
-
-    /**
-     * 扣除会员积分
-     * @param memberId 会员ID
-     * @param point 会员扣除积分
-     * @return 会员积分
-     */
-    Integer deductPoints(Integer memberId, int point);
-
-    /**
-     * 从会员余额中扣钱
-     * @param memberId 会员ID
-     * @param sum 扣除总金额
-     * @return 会员余额
-     */
-    Double deductBalance(Integer memberId, Double sum);
-
-    /**
-     * 向会员余额中退钱
-     * @param memberId 会员ID
-     * @param sum 退还总金额
-     * @return 会员余额
-     */
-    Double returnBalance(Integer memberId, Double sum);
+    void useCoupon(Integer couponId);
 }

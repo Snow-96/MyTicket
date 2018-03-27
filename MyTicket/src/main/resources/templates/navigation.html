@@ -14,11 +14,28 @@
                 if(data) {
                     $("#loginButton").text("登出");
                     $("#loginButton").attr("href", "/logout");
+
+                    $.get("/checkLoginType", function (data, status) {
+                        if(data === "member"){
+                            $("#center").text("个人中心");
+                            $("#center").attr("href","/memberCenter")
+                        }
+
+                        if(data === "stadium"){
+
+                        }
+
+                        if(data === "manager"){
+
+                        }
+                    })
+
                 }else {
                     $("#loginButton").text("登录");
                     $("#loginButton").attr("href", "/login");
                 }
             });
+
         });
 
         function showAlert(message) {
@@ -30,6 +47,10 @@
     <nav class="uk-navbar" uk-navbar>
         <div class="uk-navbar-left">
             <a class="uk-navbar-item uk-logo uk-light" href="/homepage">MyTicket</a>
+        </div>
+
+        <div class="uk-navbar-left">
+            <a style="font-size: large" class="uk-navbar-item uk-logo uk-light" id="center" href=""></a>
         </div>
 
         <div class="uk-navbar-center">

@@ -13,10 +13,12 @@ import java.util.List;
 
 @Service
 public class CouponServiceImpl implements CouponService {
+    private final CouponRepository couponRepository;
+
     @Autowired
-    private CouponRepository couponRepository;
-    @Autowired
-    private MemberService memberService;
+    public CouponServiceImpl(CouponRepository couponRepository) {
+        this.couponRepository = couponRepository;
+    }
 
     @Override
     public List<Coupon> getCoupons(Integer memberId) {
@@ -24,24 +26,10 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Integer convertCoupons(Coupon coupon, Integer amount) {
-        //记录最后会员积分
-        int currentPoints = 0;
-        //设置过期时间
-        Date now = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(now);
-        c.add(Calendar.DAY_OF_MONTH, 10);// 今天+10天
-        Date expirationDate = c.getTime();
-
-        for(int i=0;i<amount;i++){
-            currentPoints = memberService.deductPoints(coupon.getMemberId(),coupon.getNeedPoints());
-            coupon.setExpirationDate(expirationDate);
-            couponRepository.save(coupon);
-        }
-
-        return currentPoints;
+    public void addCoupon(Coupon coupon) {
+        couponRepository.save(coupon);
     }
+
 
     @Override
     public void useCoupon(Integer couponId) {

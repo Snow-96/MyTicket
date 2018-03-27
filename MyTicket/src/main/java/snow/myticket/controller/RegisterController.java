@@ -12,8 +12,12 @@ import java.util.Map;
 
 @Controller
 public class RegisterController {
+    private final RegisterService registerService;
+
     @Autowired
-    private RegisterService registerService;
+    public RegisterController(RegisterService registerService) {
+        this.registerService = registerService;
+    }
 
     @RequestMapping("/register")
     public String getRegister(){

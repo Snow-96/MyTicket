@@ -11,12 +11,16 @@ import snow.myticket.tool.EmailHelper;
 
 @Service
 public class RegisterServiceImpl implements RegisterService{
+    private final MemberService memberService;
+    private final StadiumService stadiumService;
+    private final EmailHelper emailHelper;
+
     @Autowired
-    private MemberService memberService;
-    @Autowired
-    private StadiumService stadiumService;
-    @Autowired
-    private EmailHelper emailHelper;
+    public RegisterServiceImpl(MemberService memberService, StadiumService stadiumService, EmailHelper emailHelper) {
+        this.memberService = memberService;
+        this.stadiumService = stadiumService;
+        this.emailHelper = emailHelper;
+    }
 
     @Override
     public void memberRegister(Member member) {

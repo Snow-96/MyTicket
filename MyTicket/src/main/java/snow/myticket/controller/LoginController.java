@@ -14,12 +14,16 @@ import java.util.Map;
 
 @Controller
 public class LoginController {
+    private final LoginService loginService;
+    private final MemberService memberService;
+    private final StadiumService stadiumService;
+
     @Autowired
-    private LoginService loginService;
-    @Autowired
-    private MemberService memberService;
-    @Autowired
-    private StadiumService stadiumService;
+    public LoginController(LoginService loginService, MemberService memberService, StadiumService stadiumService) {
+        this.loginService = loginService;
+        this.memberService = memberService;
+        this.stadiumService = stadiumService;
+    }
 
     @RequestMapping("/login")
     public String getLogin(){
@@ -36,6 +40,16 @@ public class LoginController {
     @ResponseBody
     public boolean checkLoginStatus(HttpServletRequest httpServletRequest){
         return httpServletRequest.getSession(false) != null;
+    }
+
+    @RequestMapping("/checkLoginType")
+    @ResponseBody
+    public String checkLoginType(HttpServletRequest httpServletRequest){
+        if(httpServletRequest.getSession().getAttribute("member") != null)
+            return "member";
+        if(httpServletRequest.getSession().getAttribute("stadium") != null)
+            return "stadium";
+        return "manager";
     }
 
     @RequestMapping("/memberLogin")

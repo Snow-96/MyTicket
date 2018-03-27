@@ -9,10 +9,14 @@ import snow.myticket.service.StadiumService;
 
 @Service
 public class LoginServiceImpl implements LoginService {
+    private final MemberService memberService;
+    private final StadiumService stadiumService;
+
     @Autowired
-    private MemberService memberService;
-    @Autowired
-    private StadiumService stadiumService;
+    public LoginServiceImpl(MemberService memberService, StadiumService stadiumService) {
+        this.memberService = memberService;
+        this.stadiumService = stadiumService;
+    }
 
     @Override
     public boolean checkMemberPassword(Member member) {
