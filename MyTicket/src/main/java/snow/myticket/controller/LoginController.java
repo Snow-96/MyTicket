@@ -45,9 +45,9 @@ public class LoginController {
     @RequestMapping("/checkLoginType")
     @ResponseBody
     public String checkLoginType(HttpServletRequest httpServletRequest){
-        if(httpServletRequest.getSession().getAttribute("member") != null)
+        if(httpServletRequest.getSession(false).getAttribute("member") != null)
             return "member";
-        if(httpServletRequest.getSession().getAttribute("stadium") != null)
+        if(httpServletRequest.getSession(false).getAttribute("stadium") != null)
             return "stadium";
         return "manager";
     }
@@ -62,8 +62,8 @@ public class LoginController {
         }else{
             result.put("result","fail");
             if(!loginService.checkMemberValid(member.getEmail()))
-                result.put("message","会员已失效!");
-            if(!loginService.checkMemberPassword(member))
+                result.put("message","会员不存在或已失效!");
+            else if(!loginService.checkMemberPassword(member))
                 result.put("message","密码不正确!");
         }
         return result;

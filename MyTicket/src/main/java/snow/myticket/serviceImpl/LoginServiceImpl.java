@@ -25,7 +25,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean checkMemberValid(String email) {
-        return memberService.getMember(email).getIsValid() == 1;
+        Member member = memberService.getMember(email);
+        return member != null && member.getIsValid() == 1;
+
     }
 
     @Override

@@ -15,7 +15,7 @@ function memberLogin() {
                     window.location.href = "homepage.html";
                 },2000);
             } else {
-                showAlert("Server Error");
+                showAlert(data.message);
             }
         }
 

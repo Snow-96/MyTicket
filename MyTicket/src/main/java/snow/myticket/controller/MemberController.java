@@ -27,7 +27,7 @@ public class MemberController {
 
     @RequestMapping("/memberInfo")
     public String getMemberInfo(Model model, HttpServletRequest httpServletRequest){
-        String email = ((Member)httpServletRequest.getSession().getAttribute("member")).getEmail();
+        String email = ((Member)httpServletRequest.getSession(false).getAttribute("member")).getEmail();
         model.addAttribute("member",memberService.getMember(email));
         return "memberInfo";
     }
@@ -39,7 +39,9 @@ public class MemberController {
 
     @RequestMapping("/cancelMember")
     @ResponseBody
-    public Map<String,String> cancelMember(@RequestParam String email){
+    public Map<String,String> cancelMember(@RequestParam String email, HttpServletRequest httpServletRequest){
+        //注销会话
+        httpServletRequest.getSession(false).invalidate();
         Map<String,String> result = new HashMap<>();
         try {
             memberService.cancelMember(email);
