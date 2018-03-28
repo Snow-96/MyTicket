@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StadiumInfo</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+
+    <style>
+        .uk-form-label{
+            color: #999999;
+            padding-left: 45px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="stadiumNav::stadiumNavigation"></div>
+
+<article style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 280px" class="uk-comment uk-comment-primary">
+    <div class="uk-comment-body">
+
+        <form style="margin-top: 20px" class="uk-form-horizontal uk-margin-large">
+
+            <div class="uk-margin">
+                <label class="uk-form-label">名字</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${stadium.name}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">位置</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${stadium.location}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">座位总数量</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${stadium.seatAmount}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">场馆总收入</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${stadium.income}" disabled>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</article>
+
+</body>
+</html>
