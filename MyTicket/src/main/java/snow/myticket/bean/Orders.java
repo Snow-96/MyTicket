@@ -32,7 +32,7 @@ public class Orders {
      */
     private Integer randomAmount;
     /**
-     * 0为预定状态，1为已支付，2为已完成即已将收入打入场馆账户，-1为已取消
+     * 0为预定状态，1为已支付，2为已将收入打入场馆账户，-1为已取消, 3为已检票即已完成
      */
     private Integer status;
     private Date reserveDate;

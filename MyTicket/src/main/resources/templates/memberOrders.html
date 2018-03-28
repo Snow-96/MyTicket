@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MemberOrders</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="memberNav::memberNavigation"></div>
+
+<table style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 200px" class="uk-table uk-table-justify uk-table-divider">
+    <thead>
+    <tr>
+        <th>活动名称</th>
+        <th>场馆名称</th>
+        <th>订单总价</th>
+        <th>一等座</th>
+        <th>二等座</th>
+        <th>三等座</th>
+        <th>待分配座位</th>
+        <th>优惠券</th>
+        <th>座位状态</th>
+        <th>订单状态</th>
+        <th>预定时间</th>
+        <th>退订</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="ordersVO:${ordersList}">
+        <td th:text="${ordersVO.activityName}"></td>
+        <td th:text="${ordersVO.stadiumName}"></td>
+        <td th:text="${ordersVO.totalPrice}"></td>
+        <td th:text="${ordersVO.firstAmount}"></td>
+        <td th:text="${ordersVO.secondAmount}"></td>
+        <td th:text="${ordersVO.thirdAmount}"></td>
+        <td th:text="${ordersVO.randomAmount}"></td>
+        <td th:text="${ordersVO.couponUseStatus}"></td>
+        <td th:text="${ordersVO.seatStatus}"></td>
+        <td th:text="${ordersVO.payStatus}"></td>
+        <td th:text="${ordersVO.reserveDate}"></td>
+    </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>

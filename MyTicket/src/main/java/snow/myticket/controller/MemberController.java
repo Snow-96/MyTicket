@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import snow.myticket.bean.Coupon;
-import snow.myticket.bean.CouponList;
+import snow.myticket.bean.Orders;
+import snow.myticket.service.*;
+import snow.myticket.tool.VOHelper;
+import snow.myticket.vo.CouponListVO;
 import snow.myticket.bean.Member;
-import snow.myticket.service.CouponService;
-import snow.myticket.service.MemberService;
+import snow.myticket.vo.OrdersVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +22,18 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final CouponService couponService;
+    private final OrdersService ordersService;
+    private final VOHelper voHelper;
     private final int COUPON_1ST_POINT = 200;
     private final int COUPON_2ND_POINT = 400;
     private final int COUPON_3RD_POINT = 800;
 
     @Autowired
-    public MemberController(MemberService memberService, CouponService couponService) {
+    public MemberController(MemberService memberService, CouponService couponService, OrdersService ordersService, VOHelper voHelper) {
         this.memberService = memberService;
         this.couponService = couponService;
+        this.ordersService = ordersService;
+        this.voHelper = voHelper;
     }
 
     @RequestMapping("/memberCenter")
@@ -44,6 +51,20 @@ public class MemberController {
     @RequestMapping("/memberModify")
     public String getMemberModify(){
         return "memberModify";
+    }
+
+    @RequestMapping("/memberOrders")
+    public String getMemberOrders(Model model, HttpServletRequest httpServletRequest){
+        Integer memberId = ((Member)httpServletRequest.getSession(false).getAttribute("member")).getId();
+        List<Orders> ordersList = ordersService.getMemberOrders(memberId);
+        List<OrdersVO> ordersVOList = new ArrayList<>();
+
+        for(Orders orders : ordersList){
+            ordersVOList.add(voHelper.ordersConvert(orders));
+        }
+
+        model.addAttribute("ordersList",ordersVOList);
+        return "memberOrders";
     }
 
     @RequestMapping("/memberCoupon")
@@ -104,26 +125,26 @@ public class MemberController {
 
     @RequestMapping("/convertMemberCoupon")
     @ResponseBody
-    public Map<String,String> convertMemberCoupon(@RequestBody CouponList couponList){
+    public Map<String,String> convertMemberCoupon(@RequestBody CouponListVO couponListVO){
         Map<String,String> result = new HashMap<>();
         try {
             Coupon coupon_1st = new Coupon();
-            coupon_1st.setMemberId(couponList.getMemberId());
-            coupon_1st.setDiscount(couponList.getDiscount_1st());
-            coupon_1st.setNeedPoints(couponList.getNeedPoints_1st());
-            memberService.convertCoupons(coupon_1st,couponList.getAmount_1st());
+            coupon_1st.setMemberId(couponListVO.getMemberId());
+            coupon_1st.setDiscount(couponListVO.getDiscount_1st());
+            coupon_1st.setNeedPoints(couponListVO.getNeedPoints_1st());
+            memberService.convertCoupons(coupon_1st, couponListVO.getAmount_1st());
 
             Coupon coupon_2nd = new Coupon();
-            coupon_2nd.setMemberId(couponList.getMemberId());
-            coupon_2nd.setDiscount(couponList.getDiscount_2nd());
-            coupon_2nd.setNeedPoints(couponList.getNeedPoints_2nd());
-            memberService.convertCoupons(coupon_2nd,couponList.getAmount_2nd());
+            coupon_2nd.setMemberId(couponListVO.getMemberId());
+            coupon_2nd.setDiscount(couponListVO.getDiscount_2nd());
+            coupon_2nd.setNeedPoints(couponListVO.getNeedPoints_2nd());
+            memberService.convertCoupons(coupon_2nd, couponListVO.getAmount_2nd());
 
             Coupon coupon_3rd = new Coupon();
-            coupon_3rd.setMemberId(couponList.getMemberId());
-            coupon_3rd.setDiscount(couponList.getDiscount_3rd());
-            coupon_3rd.setNeedPoints(couponList.getNeedPoints_3rd());
-            memberService.convertCoupons(coupon_3rd,couponList.getAmount_3rd());
+            coupon_3rd.setMemberId(couponListVO.getMemberId());
+            coupon_3rd.setDiscount(couponListVO.getDiscount_3rd());
+            coupon_3rd.setNeedPoints(couponListVO.getNeedPoints_3rd());
+            memberService.convertCoupons(coupon_3rd, couponListVO.getAmount_3rd());
         }catch (Exception e){
             result.put("result","fail");
             result.put("message","Server Error");

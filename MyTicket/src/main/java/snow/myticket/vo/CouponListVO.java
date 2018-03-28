@@ -1,6 +1,6 @@
-package snow.myticket.bean;
+package snow.myticket.vo;
 
-public class CouponList {
+public class CouponListVO {
     private Integer memberId;
     private Integer needPoints_1st;
     private Integer needPoints_2nd;
