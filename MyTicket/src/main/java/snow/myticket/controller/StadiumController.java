@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import snow.myticket.bean.Activity;
 import snow.myticket.bean.Stadium;
 import snow.myticket.service.StadiumService;
 
@@ -40,6 +41,11 @@ public class StadiumController {
         return "stadiumModify";
     }
 
+    @RequestMapping("/stadiumActivity")
+    public String getStadiumActivity(){
+        return "stadiumActivity";
+    }
+
     @RequestMapping("/checkModifyStatus")
     @ResponseBody
     public Map<String,String> checkModifyStatus(@RequestParam String stadiumCode){
@@ -66,6 +72,21 @@ public class StadiumController {
         Map<String,String> result = new HashMap<>();
         try {
            stadiumService.modifyStadiumInfo(stadium);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/releaseActivity")
+    @ResponseBody
+    public Map<String,String> releaseActivity(@RequestBody Activity activity){
+        Map<String,String> result = new HashMap<>();
+        try {
+            stadiumService.releaseActivity(activity);
         }catch (Exception e){
             result.put("result","fail");
             result.put("message","Server Error");

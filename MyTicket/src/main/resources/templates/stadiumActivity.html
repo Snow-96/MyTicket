@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StadiumActivity</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/stadiumCenter.js"></script>
+
+    <style>
+        .uk-form-label{
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="stadiumNav::stadiumNavigation"></div>
+
+<button style="position: absolute; left: 50% ; top: 90px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default" href="#modal-sections" uk-toggle>发布活动</button>
+
+<div id="modal-sections" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 style="color: #999999" class="uk-modal-title">发 布 活 动</h2>
+        </div>
+
+        <form class="uk-form-horizontal uk-margin-large">
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">名称</label>
+                <div class="uk-form-controls">
+                    <input style="width: 80%" class="uk-input" type="text" id="activityName" placeholder="请输入活动名称">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">类别</label>
+                <div class="uk-form-controls">
+                    <input style="width: 80%" class="uk-input" type="text" id="activityType" placeholder="请输入活动类别">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">举办时间</label>
+                <div class="uk-form-controls">
+                    <input style="width: 80%" class="uk-input" type="text" id="activityHoldDate" placeholder="请输入举办时间">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">售票时间</label>
+                <div class="uk-form-controls">
+                    <input style="width: 80%" class="uk-input" type="text" id="activitySellDate" placeholder="请输入售票时间">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">一等座数量/价格</label>
+                <div class="uk-form-controls">
+                    <input style="width: 40%" class="uk-input" type="text" id="activityAmount_1st" placeholder="请输入数量">
+                    <input style="width: 40%" class="uk-input" type="text" id="activityPrice_1st" placeholder="请输入价格">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">二等座数量/价格</label>
+                <div class="uk-form-controls">
+                    <input style="width: 40%" class="uk-input" type="text" id="activityAmount_2nd" placeholder="请输入数量">
+                    <input style="width: 40%" class="uk-input" type="text" id="activityPrice_2nd" placeholder="请输入价格">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">三等座数量/价格</label>
+                <div class="uk-form-controls">
+                    <input style="width: 40%" class="uk-input" type="text" id="activityAmount_3rd" placeholder="请输入数量">
+                    <input style="width: 40%" class="uk-input" type="text" id="activityPrice_3rd" placeholder="请输入价格">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label style="margin-left: 30px" class="uk-form-label">描述</label>
+                <div class="uk-form-controls">
+                    <textarea style="width: 80%; height: 100px" class="uk-textarea" type="text" id="activityDescription" placeholder="请输入活动描述"></textarea>
+                </div>
+            </div>
+        </form>
+
+        <div class="uk-modal-footer uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" th:onclick="'javascript:releaseActivity(\''+${session.stadium.code}+'\',\''+${session.stadium.location}+'\');'">发布</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
