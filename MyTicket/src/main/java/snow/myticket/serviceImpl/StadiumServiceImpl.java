@@ -48,7 +48,7 @@ public class StadiumServiceImpl implements StadiumService {
 
     @Override
     public void modifyStadiumInfo(Stadium stadium) {
-        reviewRepository.save(new Review(stadium.getLocation(),stadium.getSeatAmount(),0));
+        reviewRepository.save(new Review(stadium.getLocation(),stadium.getSeatAmount(),0,stadium.getCode()));
     }
 
     @Override

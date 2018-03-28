@@ -12,7 +12,7 @@ public interface ReviewRepository extends JpaRepository<Review,Integer>{
      * @param stadiumCode 场馆编码
      * @return 状态码
      */
-    @Query("SELECT r.status FROM Review r WHERE r.stadiumCode = ?1")
+    @Query("SELECT r.status FROM Review r WHERE r.stadiumCode = ?1 and r.status = 0")
     Integer getModifyStatus(String stadiumCode);
 
     /**

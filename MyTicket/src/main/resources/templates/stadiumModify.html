@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StadiumModify</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/stadiumCenter.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="stadiumNav::stadiumNavigation"></div>
+
+<div style="background-color: #f8f8f8;position: absolute; left: 22%; top: 90px ;width: 70%; height: 300px">
+    <form style="margin-top: 70px;margin-left: 50px;margin-right: 50px" class="uk-form-horizontal uk-margin-large">
+
+        <div class="uk-margin">
+            <label class="uk-form-label">场馆位置</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" type="text" id="newLocation" placeholder="请输入场馆位置">
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <label class="uk-form-label">座位数量</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" type="text" id="newSeatAmount" placeholder="请输入座位数量">
+            </div>
+        </div>
+
+        <div class="uk-text-center">
+            <button style="margin-top: 30px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default" type="button" th:onclick="'javascript:modifyStadiumInfo(\''+${session.stadium.code}+'\');'">提交修改申请</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

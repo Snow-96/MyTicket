@@ -23,7 +23,7 @@ public interface StadiumService {
     /**
      * 查看修改状态
      * @param stadiumCode 场馆编码
-     * @return 2代表已确认，1代表可以修改，0代表审核中，-1代表审核通过，-2代表审核未通过
+     * @return 0代表审核中，NULL代表当前没有修改申请
      */
     Integer checkModifyStatus(String stadiumCode);
 

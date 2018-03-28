@@ -13,7 +13,7 @@ public class Review {
     private String location;
     private Integer seatAmount;
     /**
-     * 1代表已确认，0代表审核中，-1代表审核通过，-2代表审核未通过
+     * 0代表审核中，-1代表审核通过，-2代表审核未通过
      */
     private Integer status;
 
@@ -60,9 +60,10 @@ public class Review {
     public Review() {
     }
 
-    public Review(String location, Integer seatAmount, Integer status) {
+    public Review(String location, Integer seatAmount, Integer status, String stadiumCode) {
         this.location = location;
         this.seatAmount = seatAmount;
         this.status = status;
+        this.stadiumCode = stadiumCode;
     }
 }
