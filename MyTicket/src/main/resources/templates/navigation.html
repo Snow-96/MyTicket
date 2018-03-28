@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org"><head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
 <body>
 
 <div th:fragment="navigation">
@@ -17,14 +17,16 @@
                     loginButton.attr("href", "/logout");
 
                     $.get("/checkLoginType", function (data, status) {
+                        var center = $("#center");
+
                         if(data === "member"){
-                            var center = $("#center");
                             center.text("个人中心");
                             center.attr("href","/memberCenter")
                         }
 
                         if(data === "stadium"){
-
+                            center.text("场馆中心");
+                            center.attr("href","/stadiumCenter")
                         }
 
                         if(data === "manager"){

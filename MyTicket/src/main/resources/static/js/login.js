@@ -21,3 +21,20 @@ function memberLogin() {
 
     });
 }
+
+function stadiumLogin() {
+    $.post("/stadiumLogin",
+        {
+            stadiumCode: $("#loginStadiumCode").val()
+        },
+        function(data,status){
+            if (data.result === "success") {
+                showAlert("场馆登陆成功");
+                setTimeout(function () {
+                    window.location.href = "homepage.html";
+                },2000);
+            } else {
+                showAlert(data.message);
+            }
+        });
+}
