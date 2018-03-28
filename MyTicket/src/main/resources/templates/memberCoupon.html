@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MemberCoupon</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/memberCenter.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="memberNav::memberNavigation"></div>
+
+<div style="position: absolute; left: 22% ; top: 100px ;width: 67%; font-size: 20px" >
+    <div class="uk-card uk-card-default uk-card-body">
+        <h3 style="color: #999999" class="uk-card-title uk-text-center" id="memberPoint" th:text="'会员积分: '+${member.point}"></h3>
+    </div>
+</div>
+
+<div style="position: absolute; left: 22% ; top: 240px ;width: 70%; font-size: 20px" class="uk-child-width-expand@s uk-text-center" uk-grid>
+    <div>
+        <div class="uk-card uk-card-default uk-card-body" uk-tooltip="200积分兑换">
+            <div class="uk-card-badge uk-label" th:text="${coupon_1st}+'张'"></div>
+            <h3 style="color: #999999;" class="uk-card-title">9.5折</h3>
+        </div>
+        <div style="margin-top: 10px">
+            <button style="margin-right: 20px" class="uk-icon-button" uk-icon="minus" onclick="subCoupons('1st')"></button>
+            <span class="uk-badge" id="1st">0</span>
+            <button style="margin-left:  20px" class="uk-icon-button" uk-icon="plus" onclick="addCoupons('1st')"></button>
+        </div>
+    </div>
+    <div>
+        <div class="uk-card uk-card-primary uk-card-body" uk-tooltip="400积分兑换">
+            <div class="uk-card-badge uk-label" th:text="${coupon_2nd}+'张'" ></div>
+            <h3 class="uk-card-title">9.0折</h3>
+        </div>
+        <div style="margin-top: 10px">
+            <button style="margin-right: 20px" class="uk-icon-button" uk-icon="minus" onclick="subCoupons('2nd')"></button>
+            <span class="uk-badge" id="2nd">0</span>
+            <button style="margin-left:  20px" class="uk-icon-button" uk-icon="plus" onclick="addCoupons('2nd')"></button>
+        </div>
+    </div>
+    <div>
+        <div style="background-color: #faa05a" class="uk-card uk-card-default uk-card-body" uk-tooltip="800积分兑换">
+            <div style="background-color: white;color: #999999" class="uk-card-badge uk-label" th:text="${coupon_3rd}+'张'"></div>
+            <h3 style="color: white" class="uk-card-title">8.5折</h3>
+        </div>
+        <div style="margin-top: 10px">
+            <button style="margin-right: 20px" class="uk-icon-button" uk-icon="minus" onclick="subCoupons('3rd')"></button>
+            <span class="uk-badge" id="3rd">0</span>
+            <button style="margin-left:  20px" class="uk-icon-button" uk-icon="plus" onclick="addCoupons('3rd')"></button>
+        </div>
+    </div>
+</div>
+
+<div style="position: absolute; left: 22% ; top: 450px ;width: 67%; font-size: 20px" >
+    <div class="uk-text-center">
+        <button style="margin-top: 30px;margin-right: 20px; width: 150px; background-color: #999999; color: white " class="uk-button uk-button-default" type="button" onclick="resetCoupons()">重置</button>
+        <button style="margin-top: 30px;margin-left:  20px; width: 150px; background-color: #999999; color: white " class="uk-button uk-button-default" type="button" th:onclick="'javascript:convertCoupons(\''+${member.id}+'\',\''+${member.point}+'\');'">兑换</button>
+    </div>
+</div>
+
+</body>
+</html>

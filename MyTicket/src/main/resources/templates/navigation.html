@@ -11,14 +11,16 @@
     <script>
         $(document).ready(function(){
             $.get("/checkLoginStatus",function(data,status){
+                var loginButton = $("#loginButton");
                 if(data) {
-                    $("#loginButton").text("登出");
-                    $("#loginButton").attr("href", "/logout");
+                    loginButton.text("登出");
+                    loginButton.attr("href", "/logout");
 
                     $.get("/checkLoginType", function (data, status) {
                         if(data === "member"){
-                            $("#center").text("个人中心");
-                            $("#center").attr("href","/memberCenter")
+                            var center = $("#center");
+                            center.text("个人中心");
+                            center.attr("href","/memberCenter")
                         }
 
                         if(data === "stadium"){
@@ -31,8 +33,8 @@
                     })
 
                 }else {
-                    $("#loginButton").text("登录");
-                    $("#loginButton").attr("href", "/login");
+                    loginButton.text("登录");
+                    loginButton.attr("href", "/login");
                 }
             });
 

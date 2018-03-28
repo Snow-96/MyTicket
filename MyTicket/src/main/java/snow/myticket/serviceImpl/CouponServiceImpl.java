@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import snow.myticket.bean.Coupon;
 import snow.myticket.repository.CouponRepository;
 import snow.myticket.service.CouponService;
-import snow.myticket.service.MemberService;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

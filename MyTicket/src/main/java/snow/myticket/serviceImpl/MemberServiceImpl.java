@@ -1,7 +1,6 @@
 package snow.myticket.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import snow.myticket.bean.Activity;
 import snow.myticket.bean.Coupon;
@@ -166,10 +165,12 @@ public class MemberServiceImpl implements MemberService {
         c.setTime(now);
         c.add(Calendar.DAY_OF_MONTH, 10);// 今天+10天
         Date expirationDate = c.getTime();
+        coupon.setExpirationDate(expirationDate);
+        //设置有效
+        coupon.setStatus(0);
 
         for(int i=0;i<amount;i++){
             currentPoints = deductPoints(coupon.getMemberId(),coupon.getNeedPoints());
-            coupon.setExpirationDate(expirationDate);
             couponService.addCoupon(coupon);
         }
 
