@@ -12,7 +12,14 @@ public interface CouponService {
      * @param memberId 会员ID
      * @return 优惠券列表
      */
-    List<Coupon> getCoupons(Integer memberId);
+    List<Coupon> getCouponsByMemberId(Integer memberId);
+
+    /**
+     * 根据优惠券ID，得到优惠券
+     * @param couponId 优惠券ID
+     * @return 优惠券实体
+     */
+    Coupon getCouponById(Integer couponId);
 
     /**
      * 增加优惠券

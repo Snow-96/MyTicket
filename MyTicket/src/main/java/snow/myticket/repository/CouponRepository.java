@@ -12,6 +12,13 @@ import java.util.List;
 public interface CouponRepository extends JpaRepository<Coupon, Integer>{
 
     /**
+     * 根据优惠券ID，获取优惠券实体
+     * @param couponId 优惠券ID
+     * @return 优惠券实体
+     */
+    Coupon findById(Integer couponId);
+
+    /**
      * 根据会员ID，获取该会员全部有效的优惠券
      * @param memberId 会员ID
      * @param status 优惠券状态

@@ -20,6 +20,12 @@ public interface ActivityService {
     Activity getActivity(Integer activityId);
 
     /**
+     * 获取所有活动
+     * @return 活动列表
+     */
+    List<Activity> getAllActivities();
+
+    /**
      * 根据场馆编码获取场馆举办的所有活动
      * @param stadiumCode 场馆编码
      * @return 活动列表

@@ -63,20 +63,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Orders reserveOrders(Orders orders, Coupon coupon) {
+    public Double calculateTotalPrice(Orders orders) {
         Activity activity = activityService.getActivity(orders.getActivityId());
         //计算订单总价
-        double sum;
+        Double sum;
         if(orders.getSeatStatus() == 1) //选座购买
             sum = orders.getFirstAmount() * activity.getFirstClassPrice() + orders.getSecondAmount() * activity.getSecondClassPrice() + orders.getThirdAmount() * activity.getThirdClassPrice();
         else //未选座购买
             sum = orders.getRandomAmount() * (activity.getFirstClassPrice() + activity.getSecondClassPrice() + activity.getThirdClassPrice())/3;
 
         sum *= 1 - getMemberLevel(orders.getMemberId()) * MEMBER_LEVEL_DISCOUNT;
-        if(coupon != null) {
+        if(orders.getCouponId() != -1) {//若使用优惠券
+            Coupon coupon = couponService.getCouponById(orders.getCouponId());
             sum *= coupon.getDiscount();
         }
-        orders.setTotalPrice(sum);
+        return sum;
+    }
+
+    @Override
+    public Orders reserveOrders(Orders orders) {
+        //使用优惠券
+        couponService.useCoupon(orders.getCouponId());
         //在活动中减去对应预定的座位数
         if(orders.getSeatStatus() == 1) {
             activityService.deductSeats(orders.getActivityId(), 1, orders.getFirstAmount());
@@ -85,6 +92,8 @@ public class MemberServiceImpl implements MemberService {
         }
         //设置订单预定时间
         orders.setReserveDate(new Date());
+        //设置订单状态
+        orders.setStatus(0);
         return ordersService.createOrders(orders);
     }
 
@@ -119,9 +128,6 @@ public class MemberServiceImpl implements MemberService {
         Integer currentLevel = getMemberLevel(orders.getMemberId());
         if(currentLevel < MEMBER_MAX_LEVEL && orders.getTotalPrice() > MEMBER_UPGRADE_STANDARD)
             currentLevel = upgrade(orders.getMemberId());
-        //若使用优惠券
-        if(orders.getCouponId() != -1)
-            couponService.useCoupon(orders.getCouponId());
         //将订单状态设置为已支付
         ordersService.payOrders(orders.getId(),new Date());
 
@@ -142,9 +148,6 @@ public class MemberServiceImpl implements MemberService {
         Integer currentLevel = getMemberLevel(orders.getMemberId());
         if(currentLevel < MEMBER_MAX_LEVEL && orders.getTotalPrice() > MEMBER_UPGRADE_STANDARD)
             currentLevel = upgrade(orders.getMemberId());
-        //若使用优惠券
-        if(orders.getCouponId() != -1)
-            couponService.useCoupon(orders.getCouponId());
         //将订单状态设置为已支付
         ordersService.payOrders(orders.getId(),new Date());
 
@@ -175,11 +178,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return currentPoints;
-    }
-
-    @Override
-    public void useCoupon(Integer couponId) {
-        couponService.useCoupon(couponId);
     }
 
     private Integer upgrade(Integer memberId) {

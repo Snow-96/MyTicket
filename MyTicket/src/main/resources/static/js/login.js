@@ -12,7 +12,7 @@ function memberLogin() {
             if (data.result === "success") {
                 showAlert("用户登陆成功");
                 setTimeout(function () {
-                    window.location.href = "homepage.html";
+                    window.location.href = "activity.html";
                 },2000);
             } else {
                 showAlert(data.message);

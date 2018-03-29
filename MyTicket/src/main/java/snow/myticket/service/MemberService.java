@@ -41,12 +41,18 @@ public interface MemberService {
     boolean checkMemberBalance(Integer memberId, Double sum);
 
     /**
+     * 计算订单总价
+     * @param orders 订单实体
+     * @return 订单总价
+     */
+    Double calculateTotalPrice(Orders orders);
+
+    /**
      * 会员预定订单
      * @param orders 订单实体
-     * @param coupon 优惠券实体
      * @return 订单实体
      */
-    Orders reserveOrders(Orders orders, Coupon coupon);
+    Orders reserveOrders(Orders orders);
 
     /**
      * 取消订单, 3天之内取消返还80%,否则返还50%
@@ -78,9 +84,4 @@ public interface MemberService {
      */
     Integer convertCoupons(Coupon coupon, Integer amount);
 
-    /**
-     * 使用优惠券
-     * @param couponId 优惠券ID
-     */
-    void useCoupon(Integer couponId);
 }

@@ -19,8 +19,13 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<Coupon> getCoupons(Integer memberId) {
+    public List<Coupon> getCouponsByMemberId(Integer memberId) {
         return couponRepository.findByMemberIdAndStatusAndExpirationDateAfter(memberId,0,new Date());
+    }
+
+    @Override
+    public Coupon getCouponById(Integer couponId) {
+        return couponRepository.findById(couponId);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package snow.myticket.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CouponListVO {
     private Integer memberId;
     private Integer needPoints_1st;
@@ -11,6 +14,22 @@ public class CouponListVO {
     private Integer amount_1st;
     private Integer amount_2nd;
     private Integer amount_3rd;
+    private List<Integer> id_1st;
+    private List<Integer> id_2nd;
+    private List<Integer> id_3rd;
+
+    public CouponListVO() {
+    }
+
+    public CouponListVO(Integer memberId, Integer amount_1st, Integer amount_2nd, Integer amount_3rd) {
+        this.memberId = memberId;
+        this.amount_1st = amount_1st;
+        this.amount_2nd = amount_2nd;
+        this.amount_3rd = amount_3rd;
+        this.id_1st = new ArrayList<>();
+        this.id_2nd = new ArrayList<>();
+        this.id_3rd = new ArrayList<>();
+    }
 
     public Integer getMemberId() {
         return memberId;
@@ -90,5 +109,29 @@ public class CouponListVO {
 
     public void setAmount_3rd(Integer amount_3rd) {
         this.amount_3rd = amount_3rd;
+    }
+
+    public List<Integer> getId_1st() {
+        return id_1st;
+    }
+
+    public void setId_1st(List<Integer> id_1st) {
+        this.id_1st = id_1st;
+    }
+
+    public List<Integer> getId_2nd() {
+        return id_2nd;
+    }
+
+    public void setId_2nd(List<Integer> id_2nd) {
+        this.id_2nd = id_2nd;
+    }
+
+    public List<Integer> getId_3rd() {
+        return id_3rd;
+    }
+
+    public void setId_3rd(List<Integer> id_3rd) {
+        this.id_3rd = id_3rd;
     }
 }

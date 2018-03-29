@@ -10,6 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity,Integer>{
+
+    /**
+     * 得到全部活动
+     * @return 活动列表
+     */
+    List<Activity> findAll();
+
     /**
      * 根据条件过滤活动
      * @param stadiumCode 场馆编号

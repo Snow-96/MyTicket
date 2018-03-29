@@ -29,6 +29,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public List<Activity> getAllActivities() {
+        return activityRepository.findAll();
+    }
+
+    @Override
     public List<Activity> getActivitiesByStadiumCode(String stadiumCode) {
         return activityRepository.findByStadiumCode(stadiumCode);
     }

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Activity</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/activity.js"></script>
+
+    <style>
+        .uk-form-label{
+            color: #999999;
+            margin-left: 120px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+
+<ul th:each="activityVO:${activityList}" class="uk-list">
+
+    <li class="uk-container">
+        <div style="height: 400px" class="uk-card uk-card-default uk-grid-collapse uk-margin" uk-grid>
+            <div style="width: 300px" class="uk-card-media-left uk-cover-container">
+                <img src="/image/lrh.jpg" alt="" uk-cover>
+                <canvas width="300" height="400"></canvas>
+            </div>
+            <div>
+                <div style="width: 800px" class="uk-card-body">
+                    <h1 th:text="${activityVO.title}" class="uk-card-title"></h1>
+                    <p th:utext="'位置：'+${activityVO.location}+'<br>类别：'+${activityVO.type}+'<br><br>举办时间：'+${activityVO.holdDate}+'<br>预定时间：'+${activityVO.sellDate}+'<br>预定状态：'+${activityVO.sellStatus}"></p>
+                    <p th:text="${activityVO.description}"></p>
+                    <a style="width: 200px; margin-right: 0" class="uk-button uk-button-primary" href="#buyTicket" th:if="${activityVO.sellStatus}=='可以购票'" th:onclick="'javascript:showBuy(\''+${activityVO.id}+'\');'" uk-toggle>购票</a>
+                </div>
+            </div>
+        </div>
+    </li>
+
+</ul>
+
+<div id="buyTicket" class="uk-modal-full" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+        <div class="uk-grid-collapse uk-child-width-1-3@s uk-flex-top" uk-grid>
+            <div class="uk-background-cover" style="background-image: url('/image/lrh.jpg');" uk-height-viewport></div>
+            <div style="width: 900px" class="uk-padding-large">
+                <div class="uk-text-center">
+                    <h1>订单预定</h1>
+                </div>
+
+                <form class="uk-form-horizontal uk-margin-large">
+                    <ul class="uk-flex-top" uk-tab="animation: uk-animation-fade">
+                        <li style="width: 100px; margin-left: 180px ;margin-right: 190px" class="uk-active" ><a href="#">选座购买</a></li>
+                        <li style="width: 100px;" class="uk-active" ><a href="#">立即购买</a></li>
+                    </ul>
+
+                    <ul class="uk-switcher uk-margin">
+                        <li>
+                            <form style="margin-top: 20px" class="uk-form-horizontal uk-margin-large">
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">一等座价格/剩余数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="1st_seat_price_choose" disabled>
+                                        <input style="margin-left: 80px" class="uk-input uk-form-width-small" type="text" id="1st_seat_amount_choose" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">二等座价格/剩余数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="2nd_seat_price_choose" disabled>
+                                        <input style="margin-left: 80px" class="uk-input uk-form-width-small" type="text" id="2nd_seat_amount_choose" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">三等座价格/剩余数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="3rd_seat_price_choose" disabled>
+                                        <input style="margin-left: 80px" class="uk-input uk-form-width-small" type="text" id="3rd_seat_amount_choose" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">一等座购买数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="1st_seat_buy_amount">
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">二等座购买数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="2nd_seat_buy_amount">
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">三等座购买数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="3rd_seat_buy_amount">
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">优惠券选择/不选则不使用</label>
+                                    <div class="uk-form-controls">
+                                        <div class="uk-inline">
+                                            <button style="width: 340px; color: #999999" class="uk-button uk-button-default" type="button" id="couponType_choose">不使用</button>
+                                            <div uk-dropdown="mode: click">
+                                                <ul class="uk-nav uk-dropdown-nav">
+                                                    <li><a id="1st_95_choose" href="#"></a></li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li><a id="2nd_90_choose" href="#"></a></li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li><a id="3rd_85_choose" href="#"></a></li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li><a id="none_choose" href="#">不使用优惠券</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="uk-text-center">
+                                    <a style="margin-top: 30px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default"  href="#total_price" onclick="calculateTotalPrice()" uk-toggle>提交订单</a>
+                                </div>
+
+                            </form>
+                        </li>
+
+                        <li>
+                            <form style="margin-top: 20px" class="uk-form-horizontal uk-margin-large">
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">一等座价格/剩余数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="1st_seat_price_instantly" disabled>
+                                        <input style="margin-left: 80px" class="uk-input uk-form-width-small" type="text" id="1st_seat_amount_instantly" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">二等座价格/剩余数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="2nd_seat_price_instantly" disabled>
+                                        <input style="margin-left: 80px" class="uk-input uk-form-width-small" type="text" id="2nd_seat_amount_instantly" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">三等座价格/剩余数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="3rd_seat_price_instantly" disabled>
+                                        <input style="margin-left: 80px" class="uk-input uk-form-width-small" type="text" id="3rd_seat_amount_instantly" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">总购买数量</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input uk-form-width-small" type="text" id="total_seat_buy_amount">
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">优惠券选择/不选则不使用</label>
+                                    <div class="uk-form-controls">
+                                        <div class="uk-inline">
+                                            <button style="width: 340px; color: #999999" class="uk-button uk-button-default" type="button" id="couponType_instantly">不使用</button>
+                                            <div uk-dropdown="mode: click">
+                                                <ul class="uk-nav uk-dropdown-nav">
+                                                    <li><a id="1st_95_instantly" href="#"></a></li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li><a id="2nd_90_instantly" href="#"></a></li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li><a id="3rd_85_instantly" href="#"></a></li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li><a id="none_instantly" href="#">不使用优惠券</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="uk-text-center">
+                                    <a style="margin-top: 30px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default"  href="#total_price" onclick="calculateTotalPrice()" uk-toggle>提交订单</a>
+                                </div>
+
+                            </form>
+                        </li>
+                    </ul>
+
+                    <div id="total_price" class="uk-flex-top" uk-modal="stack:true">
+                        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+                            <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                            <p id="sum"></p>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+    function showBuy(activityId) {
+        var member = [[${session.member}]];
+        if(member == null){
+            window.location.href = "login.html";
+        }else {
+            currentMemberId = member.id;
+            var activityList = [[${activityList}]];
+            var couponListVO = [[${couponListVO}]];
+            $.each(activityList, function (index, element) {
+                if (parseInt(element.id) === parseInt(activityId)) {
+                    $("#1st_seat_price_choose").val(element.firstClassPrice + 'RMB');
+                    $("#2nd_seat_price_choose").val(element.secondClassPrice + 'RMB');
+                    $("#3rd_seat_price_choose").val(element.thirdClassPrice + 'RMB');
+                    $("#1st_seat_amount_choose").val(element.firstClassSeats + '个');
+                    $("#2nd_seat_amount_choose").val(element.secondClassSeats + '个');
+                    $("#3rd_seat_amount_choose").val(element.thirdClassSeats + '个');
+
+                    $("#1st_seat_price_instantly").val(element.firstClassPrice + 'RMB');
+                    $("#2nd_seat_price_instantly").val(element.secondClassPrice + 'RMB');
+                    $("#3rd_seat_price_instantly").val(element.thirdClassPrice + 'RMB');
+                    $("#1st_seat_amount_instantly").val(element.firstClassSeats + '个');
+                    $("#2nd_seat_amount_instantly").val(element.secondClassSeats + '个');
+                    $("#3rd_seat_amount_instantly").val(element.thirdClassSeats + '个');
+
+                    currentActivityId = activityId;
+                    currentStadiumCode = element.stadiumCode;
+                }
+            });
+
+            var _1st_95_choose = $("#1st_95_choose");
+            var _2nd_90_choose = $("#2nd_90_choose");
+            var _3rd_85_choose = $("#3rd_85_choose");
+            var none_choose = $("#none_choose");
+
+            _1st_95_choose.text('95折优惠券：' + couponListVO.amount_1st + '张');
+            _2nd_90_choose.text('90折优惠券：' + couponListVO.amount_2nd + '张');
+            _3rd_85_choose.text('85折优惠券：' + couponListVO.amount_3rd + '张');
+
+            var _1st_95_instantly = $("#1st_95_instantly");
+            var _2nd_90_instantly = $("#2nd_90_instantly");
+            var _3rd_85_instantly = $("#3rd_85_instantly");
+            var none_instantly = $("#none_instantly");
+
+            _1st_95_instantly.text('95折优惠券：' + couponListVO.amount_1st + '张');
+            _2nd_90_instantly.text('90折优惠券：' + couponListVO.amount_2nd + '张');
+            _3rd_85_instantly.text('85折优惠券：' + couponListVO.amount_3rd + '张');
+
+            if(couponListVO.amount_1st !== 0) {
+                _1st_95_choose.click(function () {
+                    $("#couponType_choose").text("95折优惠券");
+                    currentCouponId = couponListVO.id_1st[0];
+                });
+
+                _1st_95_instantly.click(function(){
+                    $("#couponType_instantly").text("95折优惠券");
+                    currentCouponId = couponListVO.id_1st[0];
+                });
+            }
+
+            if(couponListVO.amount_2nd !== 0) {
+                _2nd_90_choose.click(function () {
+                    $("#couponType_choose").text("90折优惠券");
+                    currentCouponId = couponListVO.id_2nd[0];
+                });
+
+                _2nd_90_instantly.click(function(){
+                    $("#couponType_instantly").text("90折优惠券");
+                    currentCouponId = couponListVO.id_2nd[0];
+                });
+            }
+
+            if(couponListVO.amount_3rd !== 0) {
+                _3rd_85_choose.click(function () {
+                    $("#couponType_choose").text("85折优惠券");
+                    currentCouponId = couponListVO.id_3rd[0];
+                });
+
+                _3rd_85_instantly.click(function(){
+                    $("#couponType_instantly").text("85折优惠券");
+                    currentCouponId = couponListVO.id_3rd[0];
+                });
+            }
+
+            none_choose.click(function(){
+                $("#couponType_choose").text("不使用优惠券");
+                currentCouponId = -1;
+            });
+
+            none_instantly.click(function(){
+                $("#couponType_instantly").text("不使用优惠券");
+                currentCouponId = -1;
+            });
+
+        }
+    }
+
+</script>
+
+</body>
+</html>

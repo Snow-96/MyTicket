@@ -72,7 +72,7 @@ public class MemberController {
         String email = ((Member)httpServletRequest.getSession(false).getAttribute("member")).getEmail();
         Member member = memberService.getMember(email);
         model.addAttribute("member", member);
-        List<Coupon> couponList = couponService.getCoupons(member.getId());
+        List<Coupon> couponList = couponService.getCouponsByMemberId(member.getId());
         int coupon_1st = 0;
         int coupon_2nd = 0;
         int coupon_3rd = 0;
