@@ -22,7 +22,45 @@
 <div th:include="navigation::navigation"></div>
 <div th:include="stadiumNav::stadiumNavigation"></div>
 
-<button style="position: absolute; left: 50% ; top: 90px; width: 200px; background-color: #faa05a; color: white " class="uk-button uk-button-default" href="#modal-sections" uk-toggle>发布活动</button>
+<div style="position: absolute; left: 22% ; top: 90px ;width: 75%; height: 200px">
+    <table  class="uk-table uk-table-justify uk-table-divider">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>类别</th>
+            <th>售票时间</th>
+            <th>举办时间</th>
+            <th>一等座价格</th>
+            <th>一等座余位</th>
+            <th>二️等座价格</th>
+            <th>二等座余位</th>
+            <th>三等座价格</th>
+            <th>三等座余位</th>
+            <th>活动状态</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="activityVO:${activityList}">
+            <td th:text="${activityVO.title}"></td>
+            <td th:text="${activityVO.type}"></td>
+            <td th:text="${activityVO.sellDate}"></td>
+            <td th:text="${activityVO.holdDate}"></td>
+            <td th:text="${activityVO.firstClassPrice}"></td>
+            <td th:text="${activityVO.firstClassSeats}"></td>
+            <td th:text="${activityVO.secondClassPrice}"></td>
+            <td th:text="${activityVO.secondClassSeats}"></td>
+            <td th:text="${activityVO.thirdClassPrice}"></td>
+            <td th:text="${activityVO.thirdClassSeats}"></td>
+            <td th:text="${activityVO.sellStatus}"></td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <button style="position: absolute; left: 40% ; width: 200px; background-color: #faa05a; color: white" class="uk-button uk-button-default" href="#modal-sections" uk-toggle>发布活动</button>
+</div>
 
 <div id="modal-sections" uk-modal>
     <div class="uk-modal-dialog">

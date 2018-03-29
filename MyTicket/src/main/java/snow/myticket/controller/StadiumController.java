@@ -9,19 +9,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import snow.myticket.bean.Activity;
 import snow.myticket.bean.Stadium;
+import snow.myticket.service.ActivityService;
 import snow.myticket.service.StadiumService;
+import snow.myticket.tool.VOHelper;
+import snow.myticket.vo.ActivityVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class StadiumController {
     private final StadiumService stadiumService;
+    private final ActivityService activityService;
+    private final VOHelper voHelper;
 
     @Autowired
-    public StadiumController(StadiumService stadiumService) {
+    public StadiumController(StadiumService stadiumService, ActivityService activityService, VOHelper voHelper) {
         this.stadiumService = stadiumService;
+        this.activityService = activityService;
+        this.voHelper = voHelper;
     }
 
     @RequestMapping("/stadiumCenter")
@@ -42,7 +51,17 @@ public class StadiumController {
     }
 
     @RequestMapping("/stadiumActivity")
-    public String getStadiumActivity(){
+    public String getStadiumActivity(Model model, HttpServletRequest httpServletRequest){
+        String stadiumCode = ((Stadium)httpServletRequest.getSession(false).getAttribute("stadium")).getCode();
+        List<Activity> activityList = activityService.getActivitiesByStadiumCode(stadiumCode);
+
+        List<ActivityVO> activityVOList = new ArrayList<>();
+
+        for(Activity activity : activityList)
+            activityVOList.add(voHelper.activityConvert(activity));
+
+        model.addAttribute("activityList",activityVOList);
+
         return "stadiumActivity";
     }
 

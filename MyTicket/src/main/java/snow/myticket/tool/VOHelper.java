@@ -2,15 +2,21 @@ package snow.myticket.tool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import snow.myticket.bean.Activity;
 import snow.myticket.bean.Orders;
 import snow.myticket.service.ActivityService;
 import snow.myticket.service.StadiumService;
+import snow.myticket.vo.ActivityVO;
 import snow.myticket.vo.OrdersVO;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Component
 public class VOHelper {
     private final ActivityService activityService;
     private final StadiumService stadiumService;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     public VOHelper(ActivityService activityService, StadiumService stadiumService) {
@@ -60,9 +66,46 @@ public class VOHelper {
             payStatus = "支付状态异常";
         ordersVO.setPayStatus(payStatus);
 
-        ordersVO.setReserveDate(orders.getReserveDate().toString());
+        ordersVO.setReserveDate(dateToString(orders.getReserveDate()));
 
         return ordersVO;
+    }
+
+    public ActivityVO activityConvert(Activity activity){
+        ActivityVO activityVO = new ActivityVO();
+        activityVO.setId(activity.getId());
+
+        activityVO.setHoldDate(dateToString(activity.getHoldDate()));
+        activityVO.setSellDate(dateToString(activity.getSellDate()));
+        activityVO.setStadiumName(stadiumService.getStadium(activity.getStadiumCode()).getName());
+        activityVO.setStadiumCode(activity.getStadiumCode());
+        activityVO.setType(activity.getType());
+        activityVO.setTitle(activity.getTitle());
+        activityVO.setLocation(activity.getLocation());
+        activityVO.setDescription(activity.getDescription());
+        activityVO.setFirstClassPrice(activity.getFirstClassPrice());
+        activityVO.setSecondClassPrice(activity.getSecondClassPrice());
+        activityVO.setThirdClassPrice(activity.getThirdClassPrice());
+        activityVO.setFirstClassSeats(activity.getFirstClassSeats());
+        activityVO.setSecondClassSeats(activity.getSecondClassSeats());
+        activityVO.setThirdClassSeats(activity.getThirdClassSeats());
+
+        Date now = new Date();
+        String sellStatus;
+        if(now.before(activity.getSellDate()))
+            sellStatus = "还未发售";
+        else if(now.before(activity.getHoldDate()))
+            sellStatus = "可以购票";
+        else
+            sellStatus = "结束发售";
+
+        activityVO.setSellStatus(sellStatus);
+
+        return activityVO;
+    }
+
+    private String dateToString(Date date){
+        return sdf.format(date);
     }
 
 }
