@@ -80,7 +80,20 @@
             <div class="uk-margin">
                 <label style="margin-left: 30px" class="uk-form-label">类别</label>
                 <div class="uk-form-controls">
-                    <input style="width: 80%" class="uk-input" type="text" id="activityType" placeholder="请输入活动类别">
+                    <div class="uk-inline">
+                        <button style="width: 307px; color: #999999" class="uk-button uk-button-default" type="button" id="activityType">选择类别</button>
+                        <div uk-dropdown>
+                            <ul class="uk-nav uk-dropdown-nav">
+                                <li><a id="sing" href="#">演唱会</a></li>
+                                <li class="uk-nav-divider"></li>
+                                <li><a id="dance" href="#">舞蹈</a></li>
+                                <li class="uk-nav-divider"></li>
+                                <li><a id="speak" href="#">脱口秀</a></li>
+                                <li class="uk-nav-divider"></li>
+                                <li><a id="music" href="#">音乐会</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -36,7 +36,7 @@ function modifyStadiumInfo(stadiumCode) {
 function releaseActivity(stadiumCode,stadiumLocation) {
     var activityHoldDate = $("#activityHoldDate").val();
     var activitySellDate = $("#activitySellDate").val();
-    var activityType = $("#activityType").val();
+    var activityType = $("#activityType").text();
     var activityName = $("#activityName").val();
     var activityDescription = $("#activityDescription").val();
     var activityPrice_1st = $("#activityPrice_1st").val();
@@ -84,3 +84,21 @@ function releaseActivity(stadiumCode,stadiumLocation) {
         UIkit.notification("请完善全部信息", {pos: 'bottom-center', status: 'warning'});
     }
 }
+
+$(document).ready(function(){
+    $("#sing").click(function(){
+        $("#activityType").text("演唱会");
+    });
+
+    $("#dance").click(function(){
+        $("#activityType").text("舞蹈");
+    });
+
+    $("#speak").click(function(){
+        $("#activityType").text("脱口秀");
+    });
+
+    $("#music").click(function(){
+        $("#activityType").text("音乐会");
+    });
+});
