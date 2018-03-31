@@ -18,6 +18,11 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public Orders getOrders(Integer orderId) {
+        return ordersRepository.findById(orderId);
+    }
+
+    @Override
     public List<Orders> getMemberOrders(Integer memberId) {
         return ordersRepository.findByMemberId(memberId);
     }
@@ -41,6 +46,11 @@ public class OrdersServiceImpl implements OrdersService {
         c.add(Calendar.MINUTE, -15);// 现在时刻向前15分钟
         Date deadline = c.getTime();
         return ordersRepository.findByStatusAndReserveDateBefore(0,deadline);
+    }
+
+    @Override
+    public boolean checkOrdersValid(Integer ordersId) {
+        return ordersRepository.findById(ordersId).getStatus() != -1;
     }
 
     @Override

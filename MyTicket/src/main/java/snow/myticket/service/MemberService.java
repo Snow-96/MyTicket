@@ -63,18 +63,18 @@ public interface MemberService {
 
     /**
      * 通过会员余额支付订单
-     * @param orders 订单实体
+     * @param ordersId 订单ID
      * @return map信息
      */
-    Map<String,String> payByMemberAccount(Orders orders);
+    Map<String,String> payByMemberAccount(Integer ordersId);
 
     /**
      * 通过支付宝或网上银行支付订单
-     * @param orders 订单实体
+     * @param ordersId 订单ID
      * @param account 支付宝或网上银行账户
      * @return map信息
      */
-    Map<String,String> payByExternalAccount(Orders orders, String account);
+    Map<String,String> payByExternalAccount(Integer ordersId, String account);
 
     /**
      * 兑换优惠券

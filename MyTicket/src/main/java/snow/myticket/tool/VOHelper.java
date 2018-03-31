@@ -10,6 +10,9 @@ import snow.myticket.vo.ActivityVO;
 import snow.myticket.vo.OrdersVO;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -66,7 +69,14 @@ public class VOHelper {
             payStatus = "支付状态异常";
         ordersVO.setPayStatus(payStatus);
 
-        ordersVO.setReserveDate(dateToString(orders.getReserveDate()));
+        ordersVO.setReserveDate(orders.getReserveDate().toString());
+
+        //date转换为localDateTime
+        Instant instant = orders.getReserveDate().toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
+
+        ordersVO.setExpireDate(localDateTime.plusMinutes(15).toString() + "+00:00");
 
         return ordersVO;
     }

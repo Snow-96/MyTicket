@@ -11,6 +11,14 @@ import java.util.Date;
 import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders, Integer>{
+
+    /**
+     * 根据订单ID，得到订单实体
+     * @param ordersId 订单ID
+     * @return 订单实体
+     */
+    Orders findById(Integer ordersId);
+
     /**
      * 根据会员ID获取订单列表
      * @param memberId 会员ID

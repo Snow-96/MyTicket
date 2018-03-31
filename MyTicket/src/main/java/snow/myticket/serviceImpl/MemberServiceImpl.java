@@ -119,7 +119,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String,String> payByMemberAccount(Orders orders) {
+    public Map<String,String> payByMemberAccount(Integer ordersId) {
+        Orders orders = ordersService.getOrders(ordersId);
         //会员余额中扣钱
         double currentBalance = deductBalance(orders.getMemberId(),orders.getTotalPrice());
         //根据消费情况，增加积分
@@ -139,7 +140,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String,String> payByExternalAccount(Orders orders, String account) {
+    public Map<String,String> payByExternalAccount(Integer ordersId, String account) {
+        Orders orders = ordersService.getOrders(ordersId);
         //从支付账户的余额中扣钱
         double currentBalance = accountService.deductAccountBalance(account,orders.getTotalPrice());
         //根据消费情况，增加积分

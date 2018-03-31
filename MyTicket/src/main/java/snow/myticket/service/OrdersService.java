@@ -1,13 +1,17 @@
 package snow.myticket.service;
 
-import snow.myticket.bean.Coupon;
 import snow.myticket.bean.Orders;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface OrdersService {
+    /**
+     * 根据订单ID，获取订单实体
+     * @param ordersId 订单ID
+     * @return 订单实体
+     */
+    Orders getOrders(Integer ordersId);
 
     /**
      * 得到某一会员的全部订单信息
@@ -35,6 +39,13 @@ public interface OrdersService {
      * @return 订单列表
      */
     List<Orders> getInvalidOrders();
+
+    /**
+     * 判断订单有效性
+     * @param ordersId 订单ID
+     * @return 订单是否有效，true有效，false无效
+     */
+    boolean checkOrdersValid(Integer ordersId);
 
     /**
      * 设置待支付且已超时订单为取消状态
