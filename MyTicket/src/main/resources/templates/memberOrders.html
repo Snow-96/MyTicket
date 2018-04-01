@@ -19,13 +19,13 @@
 <table style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 200px" class="uk-table uk-table-justify uk-table-divider">
     <thead>
     <tr>
-        <th>活动名称</th>
-        <th>场馆名称</th>
-        <th>订单总价</th>
+        <th>活动名</th>
+        <th>场馆名</th>
+        <th>总价</th>
         <th>一等座</th>
         <th>二等座</th>
         <th>三等座</th>
-        <th>待分配座位</th>
+        <th>待分配</th>
         <th>优惠券</th>
         <th>座位状态</th>
         <th>订单状态</th>
@@ -35,7 +35,7 @@
     </thead>
     <tbody>
 
-    <tr th:each="ordersVO:${ordersList}">
+    <tr th:each="ordersVO:${ordersList}" uk-tooltip="200积分兑换">
         <td th:text="${ordersVO.activityName}"></td>
         <td th:text="${ordersVO.stadiumName}"></td>
         <td th:text="${ordersVO.totalPrice}"></td>
@@ -47,6 +47,8 @@
         <td th:text="${ordersVO.seatStatus}"></td>
         <td th:text="${ordersVO.payStatus}"></td>
         <td th:text="${ordersVO.reserveDate}"></td>
+        <td th:if="${ordersVO.payStatus}=='已支付'"><span class="uk-label">退订</span></td>
+        <td th:if="${ordersVO.payStatus}!='已支付'"><span class="uk-label">完成</span></td>
     </tr>
 
     </tbody>

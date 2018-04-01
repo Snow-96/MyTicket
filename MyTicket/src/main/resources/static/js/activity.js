@@ -95,6 +95,11 @@ function reserveOrders() {
     var _3rd_seat_buy_amount = $("#3rd_seat_buy_amount").val();
     var total_seat_amount = $("#total_seat_buy_amount").val();
 
+    //保证是二维数组
+    if(chooseSeatList.length === 1){
+        chooseSeatList.push([-1,-1,-1]);
+    }
+
     if(total_seat_amount === ""){
         $.ajax({
             type: "post",
@@ -128,12 +133,12 @@ function reserveOrders() {
                             if (data.result === "success") {
                                 window.location.href = "pay.html?ordersId=" + orderId;
                             } else {
-                                UIkit.notification("Server Error",{pos: 'bottom-center',status:'warning'});
+                                UIkit.notification(data.message,{pos: 'bottom-center',status:'warning'});
                             }
                         }
                     });
                 }else {
-                    UIkit.notification("Server Error", {pos: 'bottom-center', status: 'warning'});
+                    UIkit.notification(data.message, {pos: 'bottom-center', status: 'warning'});
                 }
             }
         });

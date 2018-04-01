@@ -119,51 +119,39 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Map<String,String> result = new HashMap<>();
-        result.put("返还金额", String.valueOf(back));
-        result.put("会员余额", String.valueOf(currentBalance));
+        result.put("backBalance", String.valueOf(back));
+        result.put("memberBalance", String.valueOf(currentBalance));
         return result;
     }
 
     @Override
-    public Map<String,String> payByMemberAccount(Integer ordersId) {
+    public void payByMemberAccount(Integer ordersId) {
         Orders orders = ordersService.getOrders(ordersId);
         //会员余额中扣钱
-        double currentBalance = deductBalance(orders.getMemberId(),orders.getTotalPrice());
+        deductBalance(orders.getMemberId(),orders.getTotalPrice());
         //根据消费情况，增加积分
-        Integer currentPoints = addPoints(orders.getMemberId(), (int) (orders.getTotalPrice()/MEMBER_POINT_RATE));
+        addPoints(orders.getMemberId(), (int) (orders.getTotalPrice()/MEMBER_POINT_RATE));
         //根据消费情况，升级等级
         Integer currentLevel = getMemberLevel(orders.getMemberId());
         if(currentLevel < MEMBER_MAX_LEVEL && orders.getTotalPrice() > MEMBER_UPGRADE_STANDARD)
-            currentLevel = upgrade(orders.getMemberId());
+            upgrade(orders.getMemberId());
         //将订单状态设置为已支付
         ordersService.payOrders(orders.getId(),new Date());
-
-        Map<String,String> result = new HashMap<>();
-        result.put("会员余额", String.valueOf(currentBalance));
-        result.put("会员积分", String.valueOf(currentPoints));
-        result.put("会员等级", String.valueOf(currentLevel));
-        return result;
     }
 
     @Override
-    public Map<String,String> payByExternalAccount(Integer ordersId, String account) {
+    public void payByExternalAccount(Integer ordersId, String account) {
         Orders orders = ordersService.getOrders(ordersId);
         //从支付账户的余额中扣钱
-        double currentBalance = accountService.deductAccountBalance(account,orders.getTotalPrice());
+        accountService.deductAccountBalance(account,orders.getTotalPrice());
         //根据消费情况，增加积分
-        Integer currentPoints = addPoints(orders.getMemberId(), (int) (orders.getTotalPrice()/MEMBER_POINT_RATE));
+        addPoints(orders.getMemberId(), (int) (orders.getTotalPrice()/MEMBER_POINT_RATE));
         //根据消费情况，升级等级
         Integer currentLevel = getMemberLevel(orders.getMemberId());
         if(currentLevel < MEMBER_MAX_LEVEL && orders.getTotalPrice() > MEMBER_UPGRADE_STANDARD)
-            currentLevel = upgrade(orders.getMemberId());
+            upgrade(orders.getMemberId());
         //将订单状态设置为已支付
         ordersService.payOrders(orders.getId(),new Date());
-
-        Map<String,String> result = new HashMap<>();
-        result.put("账户余额", String.valueOf(currentBalance));
-        result.put("会员积分", String.valueOf(currentPoints));
-        result.put("会员等级", String.valueOf(currentLevel));
-        return result;
     }
 
     @Override
@@ -188,14 +176,12 @@ public class MemberServiceImpl implements MemberService {
         return currentPoints;
     }
 
-    private Integer upgrade(Integer memberId) {
+    private void upgrade(Integer memberId) {
         memberRepository.upgrade(memberId);
-        return memberRepository.findById(memberId).getLevel();
     }
 
-    private Integer addPoints(Integer memberId, int point) {
+    private void addPoints(Integer memberId, int point) {
         memberRepository.addPoints(memberId,point);
-        return memberRepository.findById(memberId).getPoint();
     }
 
     private Integer deductPoints(Integer memberId, int point) {
@@ -203,9 +189,8 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(memberId).getPoint();
     }
 
-    private Double deductBalance(Integer memberId, Double sum) {
+    private void deductBalance(Integer memberId, Double sum) {
         memberRepository.deductBalance(memberId,sum);
-        return memberRepository.findById(memberId).getBalance();
     }
 
     private Double returnBalance(Integer memberId, Double sum) {

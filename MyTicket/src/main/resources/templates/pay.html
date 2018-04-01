@@ -9,6 +9,7 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/pay.js"></script>
 
     <style>
         .uk-form-label{
@@ -73,8 +74,37 @@
     </form>
 
     <div class="uk-flex uk-flex-center">
-        <button style="background-color: #faa05a; color: white; margin-right: 30px; width: 30%;" class="uk-button uk-button-default">余额支付</button>
-        <button style="background-color: #faa05a; color: white; margin-left: 30px; width: 30%;" class="uk-button uk-button-default">账号支付</button>
+        <button style="background-color: #faa05a; color: white; margin-right: 30px; width: 30%;" class="uk-button uk-button-default" th:onclick="'javascript:checkMemberBalance(\''+${session.member.id}+'\',\''+${ordersVO.totalPrice}+'\',\''+${ordersVO.id}+'\');'">余额支付</button>
+        <a style="background-color: #faa05a; color: white; margin-left: 30px; width: 30%;" class="uk-button uk-button-default" href="#accountLogin" uk-toggle>账号支付</a>
+    </div>
+
+    <div id="accountLogin" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+
+            <form class="uk-form-horizontal uk-margin">
+                <div class="uk-margin">
+                    <label class="uk-form-label">账户账号</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="text" id="account_account" placeholder="请输入账号">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <label class="uk-form-label">账户密码</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="password" id="account_password" placeholder="请输入密码">
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="uk-flex uk-flex-center">
+                <button style="background-color: #faa05a; color: white; width: 30%;" class="uk-button uk-button-default" type="button" th:onclick="'javascript:loginAccount(\''+${ordersVO.totalPrice}+'\',\''+${ordersVO.id}+'\');'">确认支付</button>
+            </div>
+
+        </div>
     </div>
 
 </div>

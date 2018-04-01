@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import snow.myticket.bean.Coupon;
-import snow.myticket.bean.Orders;
+import snow.myticket.bean.*;
 import snow.myticket.service.*;
 import snow.myticket.tool.VOHelper;
 import snow.myticket.vo.CouponListVO;
-import snow.myticket.bean.Member;
 import snow.myticket.vo.OrdersVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,17 +21,25 @@ public class MemberController {
     private final MemberService memberService;
     private final CouponService couponService;
     private final OrdersService ordersService;
+    private final AccountService accountService;
     private final VOHelper voHelper;
     private final int COUPON_1ST_POINT = 200;
     private final int COUPON_2ND_POINT = 400;
     private final int COUPON_3RD_POINT = 800;
 
     @Autowired
-    public MemberController(MemberService memberService, CouponService couponService, OrdersService ordersService, VOHelper voHelper) {
+    public MemberController(MemberService memberService, CouponService couponService, OrdersService ordersService, AccountService accountService, VOHelper voHelper) {
         this.memberService = memberService;
         this.couponService = couponService;
         this.ordersService = ordersService;
+        this.accountService = accountService;
         this.voHelper = voHelper;
+    }
+
+    @RequestMapping("/pay")
+    public String getPay(Model model, @RequestParam Integer ordersId){
+        model.addAttribute("ordersVO", voHelper.ordersConvert(ordersService.getOrders(ordersId)));
+        return "pay";
     }
 
     @RequestMapping("/memberCenter")
@@ -154,5 +160,115 @@ public class MemberController {
         return result;
     }
 
+    @RequestMapping("/calculatePrice")
+    @ResponseBody
+    public Map<String,String> calculatePrice(@RequestBody Orders orders){
+        Map<String,String> result = new HashMap<>();
+        try {
+            result.put("sum", memberService.calculateTotalPrice(orders).toString());
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
 
+    @RequestMapping("/reserveOrders")
+    @ResponseBody
+    public Map<String,String> reserveOrders(@RequestBody Orders orders){
+        Map<String,String> result = new HashMap<>();
+        try {
+            result.put("ordersId", memberService.reserveOrders(orders).getId().toString());
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/reserveOrdersSeat")
+    @ResponseBody
+    public Map<String,String> reserveOrdersSeat(@RequestParam Integer[][] seatArray, @RequestParam Integer ordersId, @RequestParam Integer activityId){
+        Map<String,String> result = new HashMap<>();
+        try {
+            for(int i=0; i<seatArray.length; i++){
+                if(seatArray[i][0] != -1){
+                    Seat seat = new Seat(ordersId,activityId,seatArray[i][1],seatArray[i][2],seatArray[i][0]);
+                    memberService.reserveOrdersSeat(seat);
+                }
+            }
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","订座错误");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/payByMemberAccount")
+    @ResponseBody
+    public Map<String,String> payByMemberAccount(@RequestParam Integer ordersId){
+        Map<String,String> result = new HashMap<>();
+        try {
+            memberService.payByMemberAccount(ordersId);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/payByExternalAccount")
+    @ResponseBody
+    public Map<String,String> payByExternalAccount(@RequestParam Integer ordersId, @RequestParam String account){
+        Map<String,String> result = new HashMap<>();
+        try {
+            memberService.payByExternalAccount(ordersId,account);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/loginAccount")
+    @ResponseBody
+    public Map<String,String> loginAccount(@RequestBody Account account){
+        Map<String,String> result = new HashMap<>();
+        try {
+            Account account_db = accountService.getAccount(account.getAccount());
+            if(account_db != null && account_db.getPassword().equals(account.getPassword()))
+                result.put("result","success");
+            else {
+                result.put("result", "fail");
+                result.put("message", "账号密码不正确");
+            }
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        return result;
+    }
+
+    @RequestMapping("/checkMemberBalance")
+    @ResponseBody
+    public Boolean checkMemberBalance(@RequestParam Integer memberId,@RequestParam Double sum){
+        return memberService.checkMemberBalance(memberId,sum);
+    }
+
+    @RequestMapping("/checkAccountBalance")
+    @ResponseBody
+    public Boolean checkAccountBalance(@RequestParam String account,@RequestParam Double sum){
+        return accountService.checkAccountBalance(account,sum);
+    }
 }

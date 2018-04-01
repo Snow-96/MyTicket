@@ -27,8 +27,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Double deductAccountBalance(String account, Double sum) {
+    public void deductAccountBalance(String account, Double sum) {
         accountRepository.deductBalance(account,sum);
-        return accountRepository.findByAccount(account).getBalance();
     }
 }

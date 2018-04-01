@@ -1,6 +1,8 @@
 package snow.myticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 import snow.myticket.bean.Seat;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public interface SeatRepository extends JpaRepository<Seat,Integer>{
      * 根据订单ID，删除该订单的座位列表
      * @param ordersId 订单ID
      */
+    @Transactional
+    @Modifying
     void deleteByOrdersId(Integer ordersId);
 
 }

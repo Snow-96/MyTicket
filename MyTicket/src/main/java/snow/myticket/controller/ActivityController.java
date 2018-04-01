@@ -27,16 +27,12 @@ import java.util.Map;
 public class ActivityController {
     private final ActivityService activityService;
     private final CouponService couponService;
-    private final MemberService memberService;
-    private final OrdersService ordersService;
     private final VOHelper voHelper;
 
     @Autowired
-    public ActivityController(ActivityService activityService, CouponService couponService, MemberService memberService, OrdersService ordersService,VOHelper voHelper) {
+    public ActivityController(ActivityService activityService, CouponService couponService, VOHelper voHelper) {
         this.activityService = activityService;
         this.couponService = couponService;
-        this.memberService = memberService;
-        this.ordersService = ordersService;
         this.voHelper = voHelper;
     }
 
@@ -59,62 +55,6 @@ public class ActivityController {
 
         model.addAttribute("activityList",activityVOList);
         return "activity";
-    }
-
-    @RequestMapping("/pay")
-    public String getPay(Model model, @RequestParam Integer ordersId){
-        model.addAttribute("ordersVO", voHelper.ordersConvert(ordersService.getOrders(ordersId)));
-        return "pay";
-    }
-
-    @RequestMapping("/calculatePrice")
-    @ResponseBody
-    public Map<String,String> calculatePrice(@RequestBody Orders orders){
-        Map<String,String> result = new HashMap<>();
-        try {
-            result.put("sum", memberService.calculateTotalPrice(orders).toString());
-        }catch (Exception e){
-            result.put("result","fail");
-            result.put("message","Server Error");
-            return result;
-        }
-        result.put("result","success");
-        return result;
-    }
-
-    @RequestMapping("/reserveOrders")
-    @ResponseBody
-    public Map<String,String> reserveOrders(@RequestBody Orders orders){
-        Map<String,String> result = new HashMap<>();
-        try {
-            result.put("ordersId", memberService.reserveOrders(orders).getId().toString());
-        }catch (Exception e){
-            result.put("result","fail");
-            result.put("message","Server Error");
-            return result;
-        }
-        result.put("result","success");
-        return result;
-    }
-
-    @RequestMapping("/reserveOrdersSeat")
-    @ResponseBody
-    public Map<String,String> reserveOrdersSeat(@RequestParam Integer[][] seatArray, @RequestParam Integer ordersId, @RequestParam Integer activityId){
-        Map<String,String> result = new HashMap<>();
-        try {
-            for(int i=0; i<seatArray.length; i++){
-                if(seatArray[i][0] != -1){
-                    Seat seat = new Seat(ordersId,activityId,seatArray[i][1],seatArray[i][2],seatArray[i][0]);
-                    memberService.reserveOrdersSeat(seat);
-                }
-            }
-        }catch (Exception e){
-            result.put("result","fail");
-            result.put("message","Server Error");
-            return result;
-        }
-        result.put("result","success");
-        return result;
     }
 
     @RequestMapping("/getActivitySeat")

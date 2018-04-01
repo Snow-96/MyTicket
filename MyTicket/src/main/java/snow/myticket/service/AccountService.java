@@ -22,7 +22,6 @@ public interface AccountService {
      * 在账户余额中扣除相应费用
      * @param account 账户
      * @param sum 待支付总金额
-     * @return 扣除后余额
      */
-    Double deductAccountBalance(String account, Double sum);
+    void deductAccountBalance(String account, Double sum);
 }
