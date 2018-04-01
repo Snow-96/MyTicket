@@ -9,6 +9,7 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/memberCenter.js"></script>
 
 </head>
 <body>
@@ -35,7 +36,7 @@
     </thead>
     <tbody>
 
-    <tr th:each="ordersVO:${ordersList}" uk-tooltip="200积分兑换">
+    <tr th:each="ordersVO:${ordersList}" th:uk-tooltip="${ordersVO.seatInfo}">
         <td th:text="${ordersVO.activityName}"></td>
         <td th:text="${ordersVO.stadiumName}"></td>
         <td th:text="${ordersVO.totalPrice}"></td>
@@ -48,7 +49,8 @@
         <td th:text="${ordersVO.payStatus}"></td>
         <td th:text="${ordersVO.reserveDate}"></td>
         <td th:if="${ordersVO.payStatus}=='已支付'"><span class="uk-label">退订</span></td>
-        <td th:if="${ordersVO.payStatus}!='已支付'"><span class="uk-label">完成</span></td>
+        <td th:if="${ordersVO.payStatus}=='待支付'"><span class="uk-label" th:onclick="'javascript:payOrders(\''+${ordersVO.id}+'\');'">支付</span></td>
+        <td th:if="${ordersVO.payStatus}=='已取消'or${ordersVO.payStatus}=='已完成'"><span class="uk-label">完成</span></td>
     </tr>
 
     </tbody>
