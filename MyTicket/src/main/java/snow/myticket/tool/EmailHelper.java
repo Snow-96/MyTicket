@@ -8,12 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmailHelper {
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     //读取配置文件中的参数
     @Value("${spring.mail.username}")
     private String sender;
+
+    @Autowired
+    public EmailHelper(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     public String sendSimpleEmail(String recipient) {
         SimpleMailMessage message = new SimpleMailMessage();

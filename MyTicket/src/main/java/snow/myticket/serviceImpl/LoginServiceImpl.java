@@ -3,6 +3,7 @@ package snow.myticket.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import snow.myticket.bean.Member;
+import snow.myticket.bean.Stadium;
 import snow.myticket.service.LoginService;
 import snow.myticket.service.MemberService;
 import snow.myticket.service.StadiumService;
@@ -32,6 +33,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean checkStadiumCodeValid(String stadiumCode) {
-        return stadiumService.getStadium(stadiumCode) != null && stadiumService.getStadium(stadiumCode).getStatus() == 1;
+        Stadium stadium = stadiumService.getStadium(stadiumCode);
+        return  stadium != null && stadium.getStatus() == 1;
     }
 }

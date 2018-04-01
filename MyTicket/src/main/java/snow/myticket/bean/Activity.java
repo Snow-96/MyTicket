@@ -25,6 +25,9 @@ public class Activity {
     private Integer firstClassSeats;
     private Integer secondClassSeats;
     private Integer thirdClassSeats;
+    private Integer totalFirstClassSeats;
+    private Integer totalSecondClassSeats;
+    private Integer totalThirdClassSeats;
 
     public Integer getId() {
         return id;
@@ -138,5 +141,29 @@ public class Activity {
 
     public void setThirdClassSeats(Integer thirdClassSeats) {
         this.thirdClassSeats = thirdClassSeats;
+    }
+
+    public Integer getTotalFirstClassSeats() {
+        return totalFirstClassSeats;
+    }
+
+    public void setTotalFirstClassSeats(Integer totalFirstClassSeats) {
+        this.totalFirstClassSeats = totalFirstClassSeats;
+    }
+
+    public Integer getTotalSecondClassSeats() {
+        return totalSecondClassSeats;
+    }
+
+    public void setTotalSecondClassSeats(Integer totalSecondClassSeats) {
+        this.totalSecondClassSeats = totalSecondClassSeats;
+    }
+
+    public Integer getTotalThirdClassSeats() {
+        return totalThirdClassSeats;
+    }
+
+    public void setTotalThirdClassSeats(Integer totalThirdClassSeats) {
+        this.totalThirdClassSeats = totalThirdClassSeats;
     }
 }

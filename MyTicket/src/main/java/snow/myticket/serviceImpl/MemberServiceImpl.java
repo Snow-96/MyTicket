@@ -2,11 +2,9 @@ package snow.myticket.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import snow.myticket.bean.Activity;
-import snow.myticket.bean.Coupon;
-import snow.myticket.bean.Member;
-import snow.myticket.bean.Orders;
+import snow.myticket.bean.*;
 import snow.myticket.repository.MemberRepository;
+import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.*;
 
 import java.util.Calendar;
@@ -17,6 +15,7 @@ import java.util.Map;
 @Service
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
+    private final SeatRepository seatRepository;
     private final OrdersService ordersService;
     private final ActivityService activityService;
     private final CouponService couponService;
@@ -28,8 +27,9 @@ public class MemberServiceImpl implements MemberService {
     private final int MEMBER_MAX_LEVEL = 10;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository,OrdersService ordersService, ActivityService activityService, CouponService couponService, AccountService accountService) {
+    public MemberServiceImpl(MemberRepository memberRepository, SeatRepository seatRepository, OrdersService ordersService, ActivityService activityService, CouponService couponService, AccountService accountService) {
         this.memberRepository = memberRepository;
+        this.seatRepository = seatRepository;
         this.ordersService = ordersService;
         this.activityService = activityService;
         this.couponService = couponService;
@@ -98,6 +98,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void reserveOrdersSeat(Seat seat) {
+        seatRepository.save(seat);
+    }
+
+    @Override
     public Map<String,String> cancelOrders(Orders orders) {
         long between=(new Date().getTime() - orders.getPayDate().getTime())/1000;//除以1000是为了转换成秒
         long day=between/(24*3600);
@@ -105,11 +110,12 @@ public class MemberServiceImpl implements MemberService {
         double back = orders.getTotalPrice() * rate;
         double currentBalance = returnBalance(orders.getMemberId(),back);
         ordersService.cancelOrders(orders);
-        //在活动中增加对应预定的座位数
+        //在活动中增加对应预定的座位数 //删除选座信息
         if(orders.getSeatStatus() == 1 || orders.getSeatStatus() == -1) {
             activityService.addSeats(orders.getActivityId(), 1, orders.getFirstAmount());
             activityService.addSeats(orders.getActivityId(), 2, orders.getSecondAmount());
             activityService.addSeats(orders.getActivityId(), 3, orders.getThirdAmount());
+            seatRepository.deleteByOrdersId(orders.getId());
         }
 
         Map<String,String> result = new HashMap<>();

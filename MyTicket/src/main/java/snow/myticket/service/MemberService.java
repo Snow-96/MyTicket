@@ -3,6 +3,7 @@ package snow.myticket.service;
 import snow.myticket.bean.Coupon;
 import snow.myticket.bean.Member;
 import snow.myticket.bean.Orders;
+import snow.myticket.bean.Seat;
 
 import java.util.Map;
 
@@ -53,6 +54,12 @@ public interface MemberService {
      * @return 订单实体
      */
     Orders reserveOrders(Orders orders);
+
+    /**
+     * 会员预定座位
+     * @param seat 座位实体
+     */
+    void reserveOrdersSeat(Seat seat);
 
     /**
      * 取消订单, 3天之内取消返还80%,否则返还50%

@@ -3,7 +3,9 @@ package snow.myticket.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import snow.myticket.bean.Activity;
+import snow.myticket.bean.Seat;
 import snow.myticket.repository.ActivityRepository;
+import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.ActivityService;
 
 import java.util.Date;
@@ -12,10 +14,12 @@ import java.util.List;
 @Service
 public class ActivityServiceImpl implements ActivityService {
     private final ActivityRepository activityRepository;
+    private final SeatRepository seatRepository;
 
     @Autowired
-    public ActivityServiceImpl(ActivityRepository activityRepository) {
+    public ActivityServiceImpl(ActivityRepository activityRepository, SeatRepository seatRepository) {
         this.activityRepository = activityRepository;
+        this.seatRepository = seatRepository;
     }
 
     @Override
@@ -26,6 +30,11 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Activity getActivity(Integer activityId) {
         return activityRepository.findById(activityId);
+    }
+
+    @Override
+    public List<Seat> getActivitySeat(Integer activityId) {
+        return seatRepository.findByActivityId(activityId);
     }
 
     @Override

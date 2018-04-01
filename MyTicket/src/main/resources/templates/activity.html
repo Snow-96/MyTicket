@@ -103,7 +103,7 @@
                                         <input class="uk-input uk-form-width-small" type="text" id="1st_seat_buy_amount"
                                                disabled>
                                         <a style="margin-left: 80px;width: 130px; background-color: #faa05a; color: white "
-                                           class="uk-button uk-button-default" href="#choose_seat" uk-toggle>选座</a>
+                                           class="uk-button uk-button-default" href="#choose_seat" uk-toggle id="choose_seat_button">选座</a>
                                     </div>
                                 </div>
 
@@ -250,58 +250,63 @@
                             <button class="uk-modal-close-default" type="button" uk-close></button>
 
                             <div>
-                                <button style="width: 18%" class="uk-button uk-button-default" type="button">等级</button>
+                                <button style="width: 18%" class="uk-button uk-button-default" id="seat_level" type="button">等级</button>
                                 <div class="uk-width-small" uk-dropdown="mode: click">
                                     <div class="uk-dropdown-grid uk-child-width-1-2@m" uk-grid>
                                         <div>
                                             <ul class="uk-nav uk-dropdown-nav">
-                                                <li><a href="#">一等座</a></li>
-                                                <li><a href="#">二等座</a></li>
-                                                <li><a href="#">三等座</a></li>
+                                                <li><a id="first_seat" href="#">一等座</a></li>
+                                                <li><a id="second_seat" href="#">二等座</a></li>
+                                                <li><a id="third_seat" href="#">三等座</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
 
                                 <button style="margin-left: 3%;width: 26%" class="uk-button uk-button-default"
-                                        type="button">选座/排
+                                        type="button" id="seat_row">选座/排
                                 </button>
                                 <div class="uk-width-small" uk-dropdown="mode: click">
                                     <div class="uk-dropdown-grid uk-child-width-1-2@m" uk-grid>
                                         <div>
                                             <ul class="uk-nav uk-dropdown-nav">
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
+                                                <li><a href="#" onclick="changeColumn(0)">1排</a></li>
+                                                <li><a href="#" onclick="changeColumn(1)">2排</a></li>
+                                                <li><a href="#" onclick="changeColumn(2)">3排</a></li>
+                                                <li><a href="#" onclick="changeColumn(3)">4排</a></li>
+                                                <li><a href="#" onclick="changeColumn(4)">5排</a></li>
+                                                <li><a href="#" onclick="changeColumn(5)">6排</a></li>
+                                                <li><a href="#" onclick="changeColumn(6)">7排</a></li>
+                                                <li><a href="#" onclick="changeColumn(7)">8排</a></li>
+                                                <li><a href="#" onclick="changeColumn(8)">9排</a></li>
+                                                <li><a href="#" onclick="changeColumn(9)">10排</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <ul class="uk-nav uk-dropdown-nav">
+                                                <li><a href="#" onclick="changeColumn(10)" >11排</a></li>
+                                                <li><a href="#" onclick="changeColumn(11)">12排</a></li>
+                                                <li><a href="#" onclick="changeColumn(12)">13排</a></li>
+                                                <li><a href="#" onclick="changeColumn(13)">14排</a></li>
+                                                <li><a href="#" onclick="changeColumn(14)">15排</a></li>
+                                                <li><a href="#" onclick="changeColumn(15)">16排</a></li>
+                                                <li><a href="#" onclick="changeColumn(16)">17排</a></li>
+                                                <li><a href="#" onclick="changeColumn(17)">18排</a></li>
+                                                <li><a href="#" onclick="changeColumn(18)">19排</a></li>
+                                                <li><a href="#" onclick="changeColumn(19)">20排</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
 
                                 <button style="margin-left: 3%;width: 26%" class="uk-button uk-button-default"
-                                        type="button">选座/号
+                                        type="button" id="seat_col">选座/号
                                 </button>
                                 <div class="uk-width-small" uk-dropdown="mode: click">
                                     <div class="uk-dropdown-grid uk-child-width-1-2@m" uk-grid>
                                         <div>
-                                            <ul class="uk-nav uk-dropdown-nav">
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
-                                                <li><a href="#">Item</a></li>
+                                            <ul id="column" class="uk-nav uk-dropdown-nav">
+
                                             </ul>
                                         </div>
                                     </div>
@@ -314,27 +319,9 @@
 
                             </p>
 
-                            <script>
-                                var chooseSeatAmount = 0;
-                                $("#plusSeat").click(function (e) {
-                                    if(chooseSeatAmount < 6) {
-                                        e.preventDefault();
-                                        var seat = $(`<button style="width: 25%; margin-right:20px;margin-bottom: 20px;background-color: #1e87f0;color: white" class="uk-inline uk-button uk-button-default"><span class="uk-position-top-right uk-icon" uk-icon="icon: close; ratio: 0.7"></span>1排1号</button>`);
-                                        seat.find('span').click(function () {
-                                            seat.hide();
-                                            chooseSeatAmount--;
-                                        });
-                                        $("#seatList").append(seat);
-                                        chooseSeatAmount++;
-                                    }else {
-                                        UIkit.notification("一次最多购买6张票", {pos: 'bottom-center', status: 'warning'});
-                                    }
-                                });
-                            </script>
-
                             <p class="uk-text-right">
                                 <button class="uk-button uk-button-default uk-modal-close" type="button">返回</button>
-                                <button class="uk-button uk-button-primary" type="button">确定</button>
+                                <button class="uk-button uk-button-primary uk-modal-close" type="button" onclick="updateSeatAmount()">确定</button>
                             </p>
                         </div>
                     </div>

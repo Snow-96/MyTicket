@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import snow.myticket.bean.Activity;
-import snow.myticket.bean.Coupon;
-import snow.myticket.bean.Member;
-import snow.myticket.bean.Orders;
+import snow.myticket.bean.*;
 import snow.myticket.service.ActivityService;
 import snow.myticket.service.CouponService;
 import snow.myticket.service.MemberService;
@@ -18,6 +15,7 @@ import snow.myticket.service.OrdersService;
 import snow.myticket.tool.VOHelper;
 import snow.myticket.vo.ActivityVO;
 import snow.myticket.vo.CouponListVO;
+import snow.myticket.vo.SeatVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -48,22 +46,7 @@ public class ActivityController {
             Member member = ((Member)httpServletRequest.getSession(false).getAttribute("member"));
 
             if(member != null) {
-                CouponListVO couponListVO = new CouponListVO(member.getId(), 0, 0, 0);
-                List<Coupon> couponList = couponService.getCouponsByMemberId(member.getId());
-                for (Coupon coupon : couponList) {
-                    if (coupon.getDiscount() == 0.95) {
-                        couponListVO.setAmount_1st(couponListVO.getAmount_1st() + 1);
-                        couponListVO.getId_1st().add(coupon.getId());
-                    }
-                    else if (coupon.getDiscount() == 0.9) {
-                        couponListVO.setAmount_2nd(couponListVO.getAmount_2nd() + 1);
-                        couponListVO.getId_2nd().add(coupon.getId());
-                    }
-                    else if (coupon.getDiscount() == 0.85) {
-                        couponListVO.setAmount_3rd(couponListVO.getAmount_3rd() + 1);
-                        couponListVO.getId_3rd().add(coupon.getId());
-                    }
-                }
+                CouponListVO couponListVO = voHelper.couponListConvert(couponService.getCouponsByMemberId(member.getId()),member.getId());
                 model.addAttribute("couponListVO", couponListVO);
             }
         }
@@ -112,5 +95,32 @@ public class ActivityController {
         }
         result.put("result","success");
         return result;
+    }
+
+    @RequestMapping("/reserveOrdersSeat")
+    @ResponseBody
+    public Map<String,String> reserveOrdersSeat(@RequestParam Integer[][] seatArray, @RequestParam Integer ordersId, @RequestParam Integer activityId){
+        Map<String,String> result = new HashMap<>();
+        try {
+            for(int i=0; i<seatArray.length; i++){
+                if(seatArray[i][0] != -1){
+                    Seat seat = new Seat(ordersId,activityId,seatArray[i][1],seatArray[i][2],seatArray[i][0]);
+                    memberService.reserveOrdersSeat(seat);
+                }
+            }
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/getActivitySeat")
+    @ResponseBody
+    public SeatVO getActivitySeat(@RequestParam Integer activityId){
+        List<Seat> seatList = activityService.getActivitySeat(activityId);
+        return voHelper.seatConvert(seatList,activityId);
     }
 }

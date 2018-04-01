@@ -2,31 +2,31 @@ package snow.myticket.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import snow.myticket.bean.Activity;
-import snow.myticket.bean.Orders;
-import snow.myticket.bean.Review;
-import snow.myticket.bean.Stadium;
+import snow.myticket.bean.*;
 import snow.myticket.repository.ReviewRepository;
+import snow.myticket.repository.SeatRepository;
 import snow.myticket.repository.StadiumRepository;
 import snow.myticket.service.ActivityService;
 import snow.myticket.service.OrdersService;
 import snow.myticket.service.StadiumService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StadiumServiceImpl implements StadiumService {
     private final ReviewRepository reviewRepository;
     private final StadiumRepository stadiumRepository;
+    private final SeatRepository seatRepository;
     private final ActivityService activityService;
     private final OrdersService ordersService;
 
+    private final Integer ROW = 20;
+
     @Autowired
-    public StadiumServiceImpl(ReviewRepository reviewRepository, StadiumRepository stadiumRepository, ActivityService activityService, OrdersService ordersService) {
+    public StadiumServiceImpl(ReviewRepository reviewRepository, StadiumRepository stadiumRepository, SeatRepository seatRepository, ActivityService activityService, OrdersService ordersService) {
         this.reviewRepository = reviewRepository;
         this.stadiumRepository = stadiumRepository;
+        this.seatRepository = seatRepository;
         this.activityService = activityService;
         this.ordersService = ordersService;
     }
@@ -85,6 +85,12 @@ public class StadiumServiceImpl implements StadiumService {
         int secondClass = activity.getSecondClassSeats();
         int thirdClass = activity.getThirdClassSeats();
 
+        //记录已经被占的座位号
+        List<Seat> seatList = activityService.getActivitySeat(activityId);
+        Set<String> occupiedSeats = new HashSet<>();
+        for(Seat seat : seatList)
+            occupiedSeats.add(seat.getSeatLevel() + "-" + seat.getRow() + "-" + seat.getCol());
+
         int successDistribution = 0;
         int failDistribution = 0;
         for(Orders orders : ordersList){
@@ -99,24 +105,61 @@ public class StadiumServiceImpl implements StadiumService {
                     if(random < 0.7 && thirdClass > 0) {
                         third++;
                         thirdClass--;
+
+                        for(int i=0;i<activity.getTotalThirdClassSeats();i++){
+                            int row = i/ROW + 1;
+                            int col = i%ROW + 1;
+                            if(!occupiedSeats.contains(3+"-"+row+"-"+col)){
+                                occupiedSeats.add(3+"-"+row+"-"+col);
+                                Seat seat = new Seat(orders.getId(),activityId,row,col,3);
+                                seatRepository.save(seat);
+                                break;
+                            }
+                        }
+
                         continue;
                     }
 
                     if(random < 0.9 && secondClass > 0) {
                         second++;
                         secondClass--;
+
+                        for(int i=0;i<activity.getTotalSecondClassSeats();i++){
+                            int row = i/ROW + 1;
+                            int col = i%ROW + 1;
+                            if(!occupiedSeats.contains(2+"-"+row+"-"+col)){
+                                occupiedSeats.add(2+"-"+row+"-"+col);
+                                Seat seat = new Seat(orders.getId(),activityId,row,col,2);
+                                seatRepository.save(seat);
+                                break;
+                            }
+                        }
+
                         continue;
                     }
 
                     if(random < 1 && firstClass > 0) {
                         first++;
                         firstClass--;
+
+                        for(int i=0;i<activity.getTotalFirstClassSeats();i++){
+                            int row = i/ROW + 1;
+                            int col = i%ROW + 1;
+                            if(!occupiedSeats.contains(1+"-"+row+"-"+col)){
+                                occupiedSeats.add(1+"-"+row+"-"+col);
+                                Seat seat = new Seat(orders.getId(),activityId,row,col,1);
+                                seatRepository.save(seat);
+                                break;
+                            }
+                        }
+
                     }
                 }
                 ordersService.setSeatsForOrders(orders.getId(),first,second,third);
                 activityService.deductSeats(activityId,1,first);
                 activityService.deductSeats(activityId,2,second);
                 activityService.deductSeats(activityId,3,third);
+
                 successDistribution++;
             }
             //退款

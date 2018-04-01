@@ -1,6 +1,7 @@
 package snow.myticket.service;
 
 import snow.myticket.bean.Activity;
+import snow.myticket.bean.Seat;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,13 @@ public interface ActivityService {
      * @return 活动实体
      */
     Activity getActivity(Integer activityId);
+
+    /**
+     * 根据活动ID，获取活动的座位列表
+     * @param activityId 活动ID
+     * @return 座位列表
+     */
+    List<Seat> getActivitySeat(Integer activityId);
 
     /**
      * 获取所有活动

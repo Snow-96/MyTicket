@@ -3,23 +3,31 @@ package snow.myticket.tool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import snow.myticket.bean.Activity;
+import snow.myticket.bean.Coupon;
 import snow.myticket.bean.Orders;
+import snow.myticket.bean.Seat;
 import snow.myticket.service.ActivityService;
 import snow.myticket.service.StadiumService;
 import snow.myticket.vo.ActivityVO;
+import snow.myticket.vo.CouponListVO;
 import snow.myticket.vo.OrdersVO;
+import snow.myticket.vo.SeatVO;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class VOHelper {
     private final ActivityService activityService;
     private final StadiumService stadiumService;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    private final Integer ROW = 20;
 
     @Autowired
     public VOHelper(ActivityService activityService, StadiumService stadiumService) {
@@ -112,6 +120,61 @@ public class VOHelper {
         activityVO.setSellStatus(sellStatus);
 
         return activityVO;
+    }
+
+    public CouponListVO couponListConvert(List<Coupon> couponList, Integer memberId){
+        CouponListVO couponListVO = new CouponListVO(memberId, 0, 0, 0);
+        for (Coupon coupon : couponList) {
+            if (coupon.getDiscount() == 0.95) {
+                couponListVO.setAmount_1st(couponListVO.getAmount_1st() + 1);
+                couponListVO.getId_1st().add(coupon.getId());
+            }
+            else if (coupon.getDiscount() == 0.9) {
+                couponListVO.setAmount_2nd(couponListVO.getAmount_2nd() + 1);
+                couponListVO.getId_2nd().add(coupon.getId());
+            }
+            else if (coupon.getDiscount() == 0.85) {
+                couponListVO.setAmount_3rd(couponListVO.getAmount_3rd() + 1);
+                couponListVO.getId_3rd().add(coupon.getId());
+            }
+        }
+
+        return couponListVO;
+    }
+
+    public SeatVO seatConvert(List<Seat> seatList, Integer activityId){
+        Activity activity = activityService.getActivity(activityId);
+        Integer firstColumn = activity.getTotalFirstClassSeats()/ROW;
+        Integer secondColumn = activity.getTotalSecondClassSeats()/ROW;
+        Integer thirdColumn = activity.getTotalThirdClassSeats()/ROW;
+
+        SeatVO seatVO = new SeatVO(ROW,firstColumn,secondColumn,thirdColumn);
+
+        for(int i=0; i<ROW; i++){
+            for(int j=0; j<firstColumn; j++) {
+                seatVO.getFirstSeat()[i][j] = 1;
+            }
+
+            for(int j=0; j<secondColumn; j++) {
+                seatVO.getSecondSeat()[i][j] = 1;
+            }
+
+            for(int j=0; j<thirdColumn; j++) {
+                seatVO.getThirdSeat()[i][j] = 1;
+            }
+        }
+
+        for(Seat seat : seatList){
+            if(seat.getSeatLevel() == 1){
+                seatVO.getFirstSeat()[seat.getRow()-1][seat.getCol()-1] = 0;
+            }else if(seat.getSeatLevel() == 2){
+                seatVO.getSecondSeat()[seat.getRow()-1][seat.getCol()-1] = 0;
+            }else if(seat.getSeatLevel() == 3){
+                seatVO.getThirdSeat()[seat.getRow()-1][seat.getCol()-1] = 0;
+            }
+        }
+
+        return seatVO;
     }
 
     private String dateToString(Date date){
