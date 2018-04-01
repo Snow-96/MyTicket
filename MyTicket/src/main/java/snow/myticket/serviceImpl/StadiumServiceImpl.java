@@ -194,4 +194,9 @@ public class StadiumServiceImpl implements StadiumService {
         activityService.setActivityChecked(activityId);
         ordersService.setActivityOrdersChecked(activityId);
     }
+
+    @Override
+    public void receiveIncome(String stadiumCode, Double income) {
+        stadiumRepository.addIncome(stadiumCode,income);
+    }
 }

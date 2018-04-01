@@ -74,6 +74,8 @@ public class VOHelper {
             payStatus = "待支付";
         else if(orders.getStatus() == 1)
             payStatus = "已支付";
+        else if(orders.getStatus() == 2)
+            payStatus = "已结算";
         else if(orders.getStatus() == 3)
             payStatus = "已完成";
         else

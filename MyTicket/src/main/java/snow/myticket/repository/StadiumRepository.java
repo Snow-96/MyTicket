@@ -53,4 +53,14 @@ public interface StadiumRepository extends JpaRepository<Stadium,Integer> {
     @Modifying
     @Query("UPDATE Stadium s SET s.location = ?1, s.seatAmount = ?2 WHERE s.code = ?3")
     void modifyStadiumInfo(String location, Integer seatAmount, String stadiumCode);
+
+    /**
+     * 增加场馆的总收入
+     * @param stadiumCode 场馆编码
+     * @param income 收入金额
+     */
+    @Transactional
+    @Modifying
+    @Query("UPDATE Stadium s SET s.income = s.income + ?2 WHERE s.code = ?1")
+    void addIncome(String stadiumCode, Double income);
 }

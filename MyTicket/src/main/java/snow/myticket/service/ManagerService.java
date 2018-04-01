@@ -1,7 +1,8 @@
 package snow.myticket.service;
 
 import snow.myticket.bean.Manager;
-import snow.myticket.bean.Review;
+
+import java.util.Map;
 
 public interface ManagerService {
 
@@ -35,4 +36,11 @@ public interface ManagerService {
      * @param reviewId 审核ID
      */
     void rejectStadiumModifyInfo(Integer reviewId);
+
+    /**
+     * 根据订单ID，将相应订单设为已转帐状态，并结算金额
+     * @param ordersId 订单ID
+     * @return map信息
+     */
+    Map<String, String> ordersTransfer(Integer ordersId);
 }

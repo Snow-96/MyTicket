@@ -20,6 +20,13 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer>{
     Orders findById(Integer ordersId);
 
     /**
+     * 根据订单状态，获取订单列表
+     * @param status 订单状态
+     * @return 订单列表
+     */
+    List<Orders> findByStatus(Integer status);
+
+    /**
      * 根据会员ID获取订单列表
      * @param memberId 会员ID
      * @return 活动列表

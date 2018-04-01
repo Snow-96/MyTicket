@@ -49,6 +49,11 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public List<Orders> getFinishedOrders() {
+        return ordersRepository.findByStatus(3);
+    }
+
+    @Override
     public boolean checkOrdersValid(Integer ordersId) {
         return ordersRepository.findById(ordersId).getStatus() != -1;
     }
@@ -61,6 +66,11 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public void setActivityOrdersChecked(Integer activityId) {
         ordersRepository.setOrdersStatusByActivityId(activityId,3);
+    }
+
+    @Override
+    public void setPlatformOrdersTransfer(Integer ordersId) {
+        ordersRepository.setOrdersStatusByOrdersId(ordersId, 2);
     }
 
     @Override

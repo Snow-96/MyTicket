@@ -89,4 +89,11 @@ public interface StadiumService {
      * @param activityId 活动ID
      */
     void checkTicketsForActivity(Integer activityId);
+
+    /**
+     * 场馆收到平台结算
+     * @param stadiumCode 场馆编码
+     * @param income 金额
+     */
+    void receiveIncome(String stadiumCode, Double income);
 }

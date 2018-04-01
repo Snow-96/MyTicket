@@ -41,6 +41,12 @@ public interface OrdersService {
     List<Orders> getInvalidOrders();
 
     /**
+     * 得到所有已完成订单
+     * @return 订单列表
+     */
+    List<Orders> getFinishedOrders();
+
+    /**
      * 判断订单有效性
      * @param ordersId 订单ID
      * @return 订单是否有效，true有效，false无效
@@ -58,6 +64,12 @@ public interface OrdersService {
      * @param activityId 活动ID
      */
     void setActivityOrdersChecked(Integer activityId);
+
+    /**
+     * 根据订单ID，将订单设置为已打入场馆账户状态
+     * @param ordersId 订单ID
+     */
+    void setPlatformOrdersTransfer(Integer ordersId);
 
     /**
      * 为订单分配座位,且设置订单座位状态为已分配

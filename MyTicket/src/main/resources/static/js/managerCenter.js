@@ -53,3 +53,21 @@ function rejectReview(reviewId) {
             }
         });
 }
+
+function ordersTransfer(ordersId) {
+    $.get("/ordersTransfer",
+        {
+            ordersId: ordersId
+        },
+        function(data,status){
+            if(status === "success") {
+                $("#transferInfo").text("场馆收入："+data.stadiumIncome + " 平台收入：" + data.platformIncome);
+            }else {
+                UIkit.notification("Server Error", {pos: 'bottom-center', status: 'warning'});
+            }
+        });
+}
+
+function refresh() {
+    window.location.href = "managerSettle.html"
+}

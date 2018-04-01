@@ -3,22 +3,28 @@ package snow.myticket.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import snow.myticket.bean.Manager;
+import snow.myticket.bean.Orders;
 import snow.myticket.bean.Review;
 import snow.myticket.repository.ManagerRepository;
 import snow.myticket.service.ManagerService;
+import snow.myticket.service.OrdersService;
 import snow.myticket.service.StadiumService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
     private final ManagerRepository managerRepository;
     private final StadiumService stadiumService;
+    private final OrdersService ordersService;
 
     @Autowired
-    public ManagerServiceImpl(ManagerRepository managerRepository ,StadiumService stadiumService) {
+    public ManagerServiceImpl(ManagerRepository managerRepository ,StadiumService stadiumService, OrdersService ordersService) {
         this.managerRepository = managerRepository;
         this.stadiumService = stadiumService;
+        this.ordersService = ordersService;
     }
 
     @Override
@@ -44,6 +50,34 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public void rejectStadiumModifyInfo(Integer reviewId) {
         stadiumService.setStadiumModifyInfoInvalid(reviewId);
+    }
+
+    @Override
+    public Map<String, String> ordersTransfer(Integer ordersId) {
+        Map<String, String>  result = new HashMap<>();
+        Orders orders = ordersService.getOrders(ordersId);
+        Double sum = orders.getTotalPrice();
+
+        Double incomeForStadium = sum * 0.9;
+        Double incomeForPlatform = sum * 0.1;
+
+        //结果保留2位小数
+        long tmp = Math.round(incomeForStadium*100);
+        incomeForStadium = tmp/100.0;
+        tmp = Math.round(incomeForPlatform*100);
+        incomeForPlatform = tmp/100.0;
+
+        //结算给场馆
+        stadiumService.receiveIncome(orders.getStadiumCode(),incomeForStadium);
+        //结算给平台
+        managerRepository.addIncome("123",incomeForPlatform);
+        //设置订单已结算
+        ordersService.setPlatformOrdersTransfer(ordersId);
+
+        result.put("stadiumIncome", incomeForStadium.toString());
+        result.put("platformIncome", incomeForPlatform.toString());
+
+        return result;
     }
 
     //生成随机数字和字母,

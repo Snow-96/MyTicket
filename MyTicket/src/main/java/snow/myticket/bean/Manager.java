@@ -11,6 +11,7 @@ public class Manager {
     private Integer id;
     private String account;
     private String password;
+    private Double income;
 
     public Integer getId() {
         return id;
@@ -34,5 +35,13 @@ public class Manager {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Double getIncome() {
+        return income;
+    }
+
+    public void setIncome(Double income) {
+        this.income = income;
     }
 }

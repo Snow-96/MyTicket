@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManagerSettle</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/managerCenter.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="managerNav::managerNavigation"></div>
+
+<div style="position: absolute; left: 8%; top: 0; width: 80%">
+
+    <table style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 200px" class="uk-table uk-table-justify uk-table-divider">
+        <thead>
+        <tr>
+            <th>活动名</th>
+            <th>场馆名</th>
+            <th>总价</th>
+            <th>订单状态</th>
+            <th>预定时间</th>
+            <th>结算</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="ordersVO:${ordersList}">
+            <td th:text="${ordersVO.activityName}"></td>
+            <td th:text="${ordersVO.stadiumName}"></td>
+            <td th:text="${ordersVO.totalPrice}"></td>
+            <td th:text="${ordersVO.payStatus}"></td>
+            <td th:text="${ordersVO.reserveDate}"></td>
+            <td><a class="uk-label" th:onclick="'javascript:ordersTransfer(\''+${ordersVO.id}+'\');'" href="#transfer" uk-toggle>结算</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div id="transfer" class="uk-flex-top" uk-modal="stack:true">
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+
+            <h3 style="font-size: 21px" id="transferInfo"></h3>
+
+            <p class="uk-text-right">
+                <a class="uk-button uk-button-default uk-modal-close" type="button" onclick="refresh()">确认</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
