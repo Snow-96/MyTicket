@@ -4,6 +4,7 @@ import snow.myticket.bean.Activity;
 import snow.myticket.bean.Review;
 import snow.myticket.bean.Stadium;
 
+import java.util.List;
 import java.util.Map;
 
 public interface StadiumService {
@@ -13,6 +14,18 @@ public interface StadiumService {
      * @return 场馆实体
      */
     Stadium getStadium(String stadiumCode);
+
+    /**
+     * 得到所有审核中的场馆注册申请
+     * @return 场馆列表
+     */
+    List<Stadium> getStadiumApply();
+
+    /**
+     * 得到所有审核中的场馆修改申请
+     * @return 修改信息列表
+     */
+    List<Review> getStadiumReview();
 
     /**
      * 在DB中创建场馆实体（申请状态）
@@ -48,9 +61,9 @@ public interface StadiumService {
 
     /**
      * 设置场馆信息修改的申请为有效
-     * @param review 审核实体
+     * @param reviewId 审核ID
      */
-    void setStadiumModifyInfoValid(Review review);
+    void setStadiumModifyInfoValid(Integer reviewId);
 
     /**
      * 设置场馆信息修改的申请为无效

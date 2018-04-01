@@ -38,3 +38,27 @@ function stadiumLogin() {
             }
         });
 }
+
+function managerLogin() {
+    $.ajax({
+        type: "post",
+        url: "/managerLogin",
+        data: JSON.stringify({
+            "account": $("#loginManagerAccount").val(),
+            "password": $("#loginManagerPassword").val()
+        }),
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+            if (data.result === "success") {
+                showAlert("经理登陆成功");
+                setTimeout(function () {
+                    window.location.href = "managerCenter.html";
+                },2000);
+            } else {
+                showAlert(data.message);
+            }
+        }
+
+    });
+}

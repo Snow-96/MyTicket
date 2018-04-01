@@ -3,8 +3,10 @@ package snow.myticket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import snow.myticket.bean.Manager;
 import snow.myticket.bean.Member;
 import snow.myticket.bean.Stadium;
+import snow.myticket.service.ManagerService;
 import snow.myticket.service.MemberService;
 import snow.myticket.service.StadiumService;
 
@@ -16,11 +18,13 @@ import java.util.Map;
 public class LoginController {
     private final MemberService memberService;
     private final StadiumService stadiumService;
+    private final ManagerService managerService;
 
     @Autowired
-    public LoginController(MemberService memberService, StadiumService stadiumService) {
+    public LoginController(MemberService memberService, StadiumService stadiumService, ManagerService managerService) {
         this.memberService = memberService;
         this.stadiumService = stadiumService;
+        this.managerService = managerService;
     }
 
     @RequestMapping("/login")
@@ -81,6 +85,21 @@ public class LoginController {
         }else{
             result.put("result","fail");
             result.put("message","场馆编码不存在或申请审批未通过");
+        }
+        return result;
+    }
+
+    @RequestMapping("/managerLogin")
+    @ResponseBody
+    public Map<String,String> managerLogin(HttpServletRequest httpServletRequest, @RequestBody Manager manager){
+        Map<String,String> result = new HashMap<>();
+        Manager manager_db = managerService.getManager(manager.getAccount());
+        if(manager_db != null && manager_db.getPassword().equals(manager.getPassword())){
+            httpServletRequest.getSession(true);
+            result.put("result","success");
+        }else{
+            result.put("result","fail");
+            result.put("message","管理员账号密码错误");
         }
         return result;
     }

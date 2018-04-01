@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import snow.myticket.bean.Stadium;
 
+import java.util.List;
+
 public interface StadiumRepository extends JpaRepository<Stadium,Integer> {
 
     /**
@@ -14,6 +16,13 @@ public interface StadiumRepository extends JpaRepository<Stadium,Integer> {
      * @return 场馆实体
      */
     Stadium findByCode(String stadiumCode);
+
+    /**
+     * 根据状态，获取场馆实体
+     * @param status 状态
+     * @return 场馆列表
+     */
+    List<Stadium> findByStatus(Integer status);
 
     /**
      * 设置场馆注册申请有效

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManagerReview</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/managerCenter.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="managerNav::managerNavigation"></div>
+
+<div style="position: absolute; left: 22%; top: 90px; width: 78%">
+
+    <table  class="uk-table uk-table-justify uk-table-divider">
+        <thead>
+        <tr>
+            <th>场馆编码</th>
+            <th>新地点</th>
+            <th>新座位数</th>
+            <th>审批</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="review:${reviewList}">
+            <td th:text="${review.stadiumCode}"></td>
+            <td th:text="${review.location}"></td>
+            <td th:text="${review.seatAmount}"></td>
+            <td><a class="uk-label" th:onclick="'javascript:passReview(\''+${review.id}+'\');'">同意</a></td>
+            <td><a class="uk-label" th:onclick="'javascript:rejectReview(\''+${review.id}+'\');'">拒绝</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>

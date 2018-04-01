@@ -37,6 +37,16 @@ public class StadiumServiceImpl implements StadiumService {
     }
 
     @Override
+    public List<Stadium> getStadiumApply() {
+        return stadiumRepository.findByStatus(0);
+    }
+
+    @Override
+    public List<Review> getStadiumReview() {
+        return reviewRepository.findByStatus(0);
+    }
+
+    @Override
     public void createStadiumApply(Stadium stadium) {
         stadiumRepository.save(stadium);
     }
@@ -62,7 +72,8 @@ public class StadiumServiceImpl implements StadiumService {
     }
 
     @Override
-    public void setStadiumModifyInfoValid(Review review) {
+    public void setStadiumModifyInfoValid(Integer reviewId) {
+        Review review = reviewRepository.findById(reviewId);
         stadiumRepository.modifyStadiumInfo(review.getLocation(),review.getSeatAmount(),review.getStadiumCode());
         reviewRepository.changeModifyStatus(review.getId(),-1);
     }

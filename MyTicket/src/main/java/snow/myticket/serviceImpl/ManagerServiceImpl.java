@@ -2,7 +2,9 @@ package snow.myticket.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import snow.myticket.bean.Manager;
 import snow.myticket.bean.Review;
+import snow.myticket.repository.ManagerRepository;
 import snow.myticket.service.ManagerService;
 import snow.myticket.service.StadiumService;
 
@@ -10,11 +12,18 @@ import java.util.Random;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
+    private final ManagerRepository managerRepository;
     private final StadiumService stadiumService;
 
     @Autowired
-    public ManagerServiceImpl(StadiumService stadiumService) {
+    public ManagerServiceImpl(ManagerRepository managerRepository ,StadiumService stadiumService) {
+        this.managerRepository = managerRepository;
         this.stadiumService = stadiumService;
+    }
+
+    @Override
+    public Manager getManager(String account) {
+        return managerRepository.findByAccount(account);
     }
 
     @Override
@@ -28,8 +37,8 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public void passStadiumModifyInfo(Review review) {
-        stadiumService.setStadiumModifyInfoValid(review);
+    public void passStadiumModifyInfo(Integer reviewId) {
+        stadiumService.setStadiumModifyInfoValid(reviewId);
     }
 
     @Override
