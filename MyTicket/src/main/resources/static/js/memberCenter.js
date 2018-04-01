@@ -105,3 +105,7 @@ function convertCoupons(memberId, memberPoints) {
         });
     }
 }
+
+function payOrders(ordersId) {
+    window.location.href= "pay.html?ordersId=" + ordersId;
+}

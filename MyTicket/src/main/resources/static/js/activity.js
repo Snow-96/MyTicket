@@ -223,7 +223,7 @@ $(document).ready(function(){
             var level = $("#seat_level").text();
             var row = $("#seat_row").text();
             var col = $("#seat_col").text();
-            currentSeat[currentRow][currentCol] = 0;
+            currentSeat[currentRow-1][currentCol-1] = 0;
             chooseSeatList.push([currentLevel,currentRow,currentCol]);
 
             $("#seat_level").text("等级");
@@ -234,11 +234,11 @@ $(document).ready(function(){
             seat.find('span').click(function (e) {
                 var seat_delete = chooseSeatList[e.currentTarget.id];
                 if(seat_delete[0] === 1){
-                    firstSeat[seat_delete[1]][seat_delete[2]] = 1;
+                    firstSeat[seat_delete[1]-1][seat_delete[2]-1] = 1;
                 }else if(seat_delete[0] === 2){
-                    secondSeat[seat_delete[1]][seat_delete[2]] = 1;
+                    secondSeat[seat_delete[1]-1][seat_delete[2]-1] = 1;
                 }else if(seat_delete[0] === 3){
-                    thirdSeat[seat_delete[1]][seat_delete[2]] = 1;
+                    thirdSeat[seat_delete[1]-1][seat_delete[2]-1] = 1;
                 }
                 chooseSeatList.splice(e.currentTarget.id,1,[-1,-1,-1]);
                 seat.hide();

@@ -7,6 +7,7 @@ import snow.myticket.repository.MemberRepository;
 import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.*;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,7 +78,11 @@ public class MemberServiceImpl implements MemberService {
             Coupon coupon = couponService.getCouponById(orders.getCouponId());
             sum *= coupon.getDiscount();
         }
-        return sum;
+
+        //结果保留2位小数
+        long tmp = Math.round(sum*100);
+        Double result = tmp/100.0;
+        return result;
     }
 
     @Override

@@ -12,6 +12,7 @@
         $(document).ready(function(){
             $.get("/checkLoginStatus",function(data,status){
                 var loginButton = $("#loginButton");
+                var myTicket = $("#my_ticket");
                 if(data) {
                     loginButton.text("登出");
                     loginButton.attr("href", "/logout");
@@ -21,12 +22,13 @@
 
                         if(data === "member"){
                             center.text("个人中心");
-                            center.attr("href","/memberCenter")
+                            center.attr("href","/memberCenter");
+                            myTicket.attr("href","/activity");
                         }
 
                         if(data === "stadium"){
                             center.text("场馆中心");
-                            center.attr("href","/stadiumCenter")
+                            center.attr("href","/stadiumCenter");
                         }
 
                         if(data === "manager"){
@@ -35,6 +37,7 @@
                     })
 
                 }else {
+                    myTicket.attr("href","/homepage");
                     loginButton.text("登录");
                     loginButton.attr("href", "/login");
                 }
@@ -50,7 +53,7 @@
 
     <nav class="uk-navbar" uk-navbar>
         <div class="uk-navbar-left">
-            <a class="uk-navbar-item uk-logo uk-light" href="/homepage">MyTicket</a>
+            <a class="uk-navbar-item uk-logo uk-light" href="/homepage" id="my_ticket">MyTicket</a>
         </div>
 
         <div class="uk-navbar-left">

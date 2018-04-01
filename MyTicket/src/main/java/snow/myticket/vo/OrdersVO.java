@@ -14,6 +14,7 @@ public class OrdersVO {
     private String payStatus;
     private String reserveDate;
     private String expireDate;
+    private String seatInfo;
 
     public Integer getId() {
         return id;
@@ -117,5 +118,13 @@ public class OrdersVO {
 
     public void setExpireDate(String expireDate) {
         this.expireDate = expireDate;
+    }
+
+    public String getSeatInfo() {
+        return seatInfo;
+    }
+
+    public void setSeatInfo(String seatInfo) {
+        this.seatInfo = seatInfo;
     }
 }

@@ -6,6 +6,7 @@ import snow.myticket.bean.Activity;
 import snow.myticket.bean.Coupon;
 import snow.myticket.bean.Orders;
 import snow.myticket.bean.Seat;
+import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.ActivityService;
 import snow.myticket.service.StadiumService;
 import snow.myticket.vo.ActivityVO;
@@ -17,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,14 +25,16 @@ import java.util.List;
 public class VOHelper {
     private final ActivityService activityService;
     private final StadiumService stadiumService;
+    private final SeatRepository seatRepository;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private final Integer ROW = 20;
 
     @Autowired
-    public VOHelper(ActivityService activityService, StadiumService stadiumService) {
+    public VOHelper(ActivityService activityService, StadiumService stadiumService, SeatRepository seatRepository) {
         this.activityService = activityService;
         this.stadiumService = stadiumService;
+        this.seatRepository = seatRepository;
     }
 
     public OrdersVO ordersConvert(Orders orders){
@@ -85,6 +87,15 @@ public class VOHelper {
         LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
 
         ordersVO.setExpireDate(localDateTime.plusMinutes(15).toString() + "+00:00");
+
+        if(orders.getSeatStatus() != 0) {
+            List<Seat> seatList = seatRepository.findByOrdersId(orders.getId());
+            StringBuilder seatInfo = new StringBuilder();
+            for (Seat seat : seatList)
+                seatInfo.append(seat.getSeatLevel()).append("等座").append(seat.getRow()).append("排").append(seat.getCol()).append("号/");
+            seatInfo.deleteCharAt(seatInfo.length() - 1);
+            ordersVO.setSeatInfo(seatInfo.toString());
+        }
 
         return ordersVO;
     }
