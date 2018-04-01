@@ -7,7 +7,6 @@ import snow.myticket.repository.MemberRepository;
 import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.*;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,8 +80,7 @@ public class MemberServiceImpl implements MemberService {
 
         //结果保留2位小数
         long tmp = Math.round(sum*100);
-        Double result = tmp/100.0;
-        return result;
+        return tmp/100.0;
     }
 
     @Override
@@ -108,11 +106,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String,String> cancelOrders(Orders orders) {
+    public Map<String,String> cancelOrders(Integer ordersId) {
+        Orders orders = ordersService.getOrders(ordersId);
         long between=(new Date().getTime() - orders.getPayDate().getTime())/1000;//除以1000是为了转换成秒
         long day=between/(24*3600);
         double rate = day < 3 ? 0.8 : 0.5;
         double back = orders.getTotalPrice() * rate;
+        //取小数点后两位
+        long tmp = Math.round(back*100);
+        back = tmp/100.0;
         double currentBalance = returnBalance(orders.getMemberId(),back);
         ordersService.cancelOrders(orders);
         //在活动中增加对应预定的座位数 //删除选座信息

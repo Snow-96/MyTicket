@@ -109,3 +109,21 @@ function convertCoupons(memberId, memberPoints) {
 function payOrders(ordersId) {
     window.location.href= "pay.html?ordersId=" + ordersId;
 }
+
+function cancelOrders(ordersId) {
+    $.get("/cancelOrders",
+        {
+            ordersId: ordersId
+        },
+        function(data,status){
+            if(status === "success") {
+                $("#cancelInfo").text("退还金额："+data.backBalance + " 账户余额：" + data.memberBalance);
+            }else {
+                UIkit.notification("Server Error", {pos: 'bottom-center', status: 'warning'});
+            }
+        });
+}
+
+function refresh() {
+    window.location.href= "memberOrders.html";
+}

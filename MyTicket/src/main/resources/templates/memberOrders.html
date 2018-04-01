@@ -48,13 +48,26 @@
         <td th:text="${ordersVO.seatStatus}"></td>
         <td th:text="${ordersVO.payStatus}"></td>
         <td th:text="${ordersVO.reserveDate}"></td>
-        <td th:if="${ordersVO.payStatus}=='已支付'"><span class="uk-label">退订</span></td>
+        <td th:if="${ordersVO.payStatus}=='已支付'"><a class="uk-label" href="#cancel" th:onclick="'javascript:cancelOrders(\''+${ordersVO.id}+'\');'" uk-toggle>退订</a></td>
         <td th:if="${ordersVO.payStatus}=='待支付'"><span class="uk-label" th:onclick="'javascript:payOrders(\''+${ordersVO.id}+'\');'">支付</span></td>
         <td th:if="${ordersVO.payStatus}=='已取消'or${ordersVO.payStatus}=='已完成'"><span class="uk-label">完成</span></td>
     </tr>
 
     </tbody>
 </table>
+
+<div id="cancel" class="uk-flex-top" uk-modal="stack:true">
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        <h3 style="font-size: 21px" id="cancelInfo"></h3>
+
+        <p class="uk-text-right">
+            <a class="uk-button uk-button-default uk-modal-close" type="button" onclick="refresh()">确认</a>
+        </p>
+    </div>
+</div>
 
 </body>
 </html>

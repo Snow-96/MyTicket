@@ -63,10 +63,10 @@ public interface MemberService {
 
     /**
      * 取消订单, 3天之内取消返还80%,否则返还50%
-     * @param orders 订单实体
+     * @param ordersId 订单ID
      * @return map信息
      */
-    Map<String,String> cancelOrders(Orders orders);
+    Map<String,String> cancelOrders(Integer ordersId);
 
     /**
      * 通过会员余额支付订单

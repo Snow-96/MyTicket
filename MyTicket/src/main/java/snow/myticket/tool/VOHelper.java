@@ -88,12 +88,11 @@ public class VOHelper {
 
         ordersVO.setExpireDate(localDateTime.plusMinutes(15).toString() + "+00:00");
 
-        if(orders.getSeatStatus() != 0) {
+        if(orders.getSeatStatus() != 0 && orders.getStatus() != -1) {
             List<Seat> seatList = seatRepository.findByOrdersId(orders.getId());
             StringBuilder seatInfo = new StringBuilder();
             for (Seat seat : seatList)
                 seatInfo.append(seat.getSeatLevel()).append("等座").append(seat.getRow()).append("排").append(seat.getCol()).append("号/");
-            seatInfo.deleteCharAt(seatInfo.length() - 1);
             ordersVO.setSeatInfo(seatInfo.toString());
         }
 

@@ -240,6 +240,21 @@ public class MemberController {
         return result;
     }
 
+    @RequestMapping("/cancelOrders")
+    @ResponseBody
+    public Map<String,String> cancelOrders(@RequestParam Integer ordersId){
+        Map<String,String> result = new HashMap<>();
+        try {
+            result = memberService.cancelOrders(ordersId);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
     @RequestMapping("/loginAccount")
     @ResponseBody
     public Map<String,String> loginAccount(@RequestBody Account account){
