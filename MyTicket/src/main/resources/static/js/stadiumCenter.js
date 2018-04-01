@@ -89,6 +89,39 @@ function releaseActivity(stadiumCode,stadiumLocation) {
     }
 }
 
+function refresh() {
+    window.location.href= "stadiumTicket.html";
+}
+
+function distributeTicket(activityId) {
+    $.get("/distributeTicketsForActivity",
+        {
+            activityId: activityId
+        },
+        function(data,status){
+            if(status === "success") {
+                $("#feedbackInfo").text("成功配票订单数：" + data.successDistribute + " 失败配票退款数：" + data.failDistribute);
+            }else {
+                UIkit.notification("Server Error", {pos: 'bottom-center', status: 'warning'});
+            }
+        });
+}
+
+function checkTicket(activityId) {
+    $.get("/checkTicketsForActivity",
+        {
+            activityId: activityId
+        },
+        function(data,status){
+            if(status === "success") {
+                $("#feedbackInfo").text("检票成功");
+            }else {
+                UIkit.notification("Server Error", {pos: 'bottom-center', status: 'warning'});
+            }
+        });
+}
+
+
 $(document).ready(function(){
     $("#sing").click(function(){
         $("#activityType").text("演唱会");

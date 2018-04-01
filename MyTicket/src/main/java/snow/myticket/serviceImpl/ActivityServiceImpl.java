@@ -49,10 +49,10 @@ public class ActivityServiceImpl implements ActivityService {
         Date now = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(now);
-        c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+        c.add(Calendar.DAY_OF_MONTH, -1);// 今天+1天
         Date start = c.getTime();
         c.setTime(now);
-        c.add(Calendar.DAY_OF_MONTH, -1);// 今天-1天
+        c.add(Calendar.DAY_OF_MONTH, +1);// 今天-1天
         Date end = c.getTime();
         return activityRepository.findByHoldDateBetweenAndStadiumCodeAndActivityStatus(start,end,stadiumCode,1);
     }

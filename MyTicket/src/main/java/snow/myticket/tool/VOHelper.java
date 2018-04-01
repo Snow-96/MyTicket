@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -90,9 +91,12 @@ public class VOHelper {
 
         if(orders.getSeatStatus() != 0 && orders.getStatus() != -1) {
             List<Seat> seatList = seatRepository.findByOrdersId(orders.getId());
+            //排序一下
+            seatList.sort(Comparator.comparingInt(Seat::getSeatLevel));
+
             StringBuilder seatInfo = new StringBuilder();
             for (Seat seat : seatList)
-                seatInfo.append(seat.getSeatLevel()).append("等座").append(seat.getRow()).append("排").append(seat.getCol()).append("号/");
+                seatInfo.append(seat.getSeatLevel()).append("等座").append(seat.getRow()).append("排").append(seat.getCol()).append("号<br>");
             ordersVO.setSeatInfo(seatInfo.toString());
         }
 

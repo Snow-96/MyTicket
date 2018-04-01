@@ -170,8 +170,8 @@ public class StadiumServiceImpl implements StadiumService {
         }
 
         Map<String, String> result = new HashMap<>();
-        result.put("成功配票",String.valueOf(successDistribution));
-        result.put("失败退款",String.valueOf(failDistribution));
+        result.put("successDistribute",String.valueOf(successDistribution));
+        result.put("failDistribute",String.valueOf(failDistribution));
         //设置活动已配票
         activityService.setActivityDistributed(activityId);
 

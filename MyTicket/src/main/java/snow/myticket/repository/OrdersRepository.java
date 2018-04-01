@@ -67,7 +67,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer>{
      */
     @Transactional
     @Modifying
-    @Query("UPDATE Orders o SET o.status = ?2 WHERE o.activityId = ?1")
+    @Query("UPDATE Orders o SET o.status = ?2 WHERE o.activityId = ?1 and o.status = 1")
     void setOrdersStatusByActivityId(Integer activityId, Integer status);
 
     /**
