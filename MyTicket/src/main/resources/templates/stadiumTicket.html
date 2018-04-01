@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StadiumTicket</title>
+
+    <link rel="stylesheet" href="../static/css/uikit.min.css"/>
+    <link rel="stylesheet" href="../static/css/uikit-custom.css">
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/uikit.min.js"></script>
+    <script src="../static/js/uikit-icons.min.js"></script>
+    <script src="../static/js/stadiumCenter.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="stadiumNav::stadiumNavigation"></div>
+
+<div style="position: absolute; left: 22%; top: 90px; width: 70%">
+    <ul class="uk-flex-center" uk-tab="animation: uk-animation-fade">
+        <li style="width: 40%" class="uk-active" ><a href="#">活动配票</a></li>
+        <li style="width: 40%" class="uk-active" ><a href="#">活动检票</a></li>
+    </ul>
+
+    <ul class="uk-switcher uk-margin">
+        <li style="width: 600px" class="uk-padding uk-container uk-container-small">
+
+        </li>
+        <li style="width: 600px" class="uk-padding uk-container uk-container-small">
+
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

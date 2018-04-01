@@ -66,7 +66,8 @@ function releaseActivity(stadiumCode,stadiumLocation) {
                 "thirdClassSeats": activityAmount_3rd,
                 "totalFirstClassSeats": activityAmount_1st,
                 "totalSecondClassSeats": activityAmount_2nd,
-                "totalThirdClassSeats": activityAmount_3rd
+                "totalThirdClassSeats": activityAmount_3rd,
+                "activityStatus": 0
 
             }),
             dataType: "json",

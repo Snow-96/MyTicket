@@ -58,7 +58,17 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer>{
     @Transactional
     @Modifying
     @Query("UPDATE Orders o SET o.status = ?2 WHERE o.id = ?1")
-    void setOrdersStatus(Integer ordersId, Integer status);
+    void setOrdersStatusByOrdersId(Integer ordersId, Integer status);
+
+    /**
+     * 设置活动订单状态
+     * @param activityId 活动ID
+     * @param status 订单状态
+     */
+    @Transactional
+    @Modifying
+    @Query("UPDATE Orders o SET o.status = ?2 WHERE o.activityId = ?1")
+    void setOrdersStatusByActivityId(Integer activityId, Integer status);
 
     /**
      * 设置订单支付时间

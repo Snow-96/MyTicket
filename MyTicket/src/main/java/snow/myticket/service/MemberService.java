@@ -85,8 +85,7 @@ public interface MemberService {
      * 兑换优惠券
      * @param coupon 优惠券实体
      * @param amount 数量
-     * @return 兑换后会员积分
      */
-    Integer convertCoupons(Coupon coupon, Integer amount);
+    void convertCoupons(Coupon coupon, Integer amount);
 
 }

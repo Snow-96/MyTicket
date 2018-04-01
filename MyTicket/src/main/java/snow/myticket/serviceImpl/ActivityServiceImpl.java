@@ -8,6 +8,7 @@ import snow.myticket.repository.ActivityRepository;
 import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.ActivityService;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,18 +44,43 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public List<Activity> getAllActivitiesNeedChecked(String stadiumCode) {
+        //设置时间
+        Date now = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(now);
+        c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+        Date start = c.getTime();
+        c.setTime(now);
+        c.add(Calendar.DAY_OF_MONTH, -1);// 今天-1天
+        Date end = c.getTime();
+        return activityRepository.findByHoldDateBetweenAndStadiumCodeAndActivityStatus(start,end,stadiumCode,1);
+    }
+
+    @Override
+    public List<Activity> getAllActivitiesNeedDistributed(String stadiumCode) {
+        //设置时间
+        Date now = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(now);
+        c.add(Calendar.DAY_OF_MONTH, 7);// 今天+7天
+        Date date = c.getTime();
+        return activityRepository.findByHoldDateAfterAndStadiumCodeAndActivityStatus(date,stadiumCode,0);
+    }
+
+    @Override
     public List<Activity> getActivitiesByStadiumCode(String stadiumCode) {
         return activityRepository.findByStadiumCode(stadiumCode);
     }
 
     @Override
-    public List<Activity> getActivitiesByDate(Date start, Date end) {
-        return activityRepository.findByHoldDateBetween(start,end);
+    public void setActivityChecked(Integer activityId) {
+        activityRepository.setActivityStatus(activityId,2);
     }
 
     @Override
-    public List<Activity> getActivitiesByType(String type) {
-        return activityRepository.findByType(type);
+    public void setActivityDistributed(Integer activityId) {
+        activityRepository.setActivityStatus(activityId,1);
     }
 
     @Override

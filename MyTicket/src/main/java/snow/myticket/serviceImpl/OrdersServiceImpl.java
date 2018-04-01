@@ -55,7 +55,12 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public void setInvalidOrdersCanceled(Integer ordersId) {
-        ordersRepository.setOrdersStatus(ordersId,-1);
+        ordersRepository.setOrdersStatusByOrdersId(ordersId,-1);
+    }
+
+    @Override
+    public void setActivityOrdersChecked(Integer activityId) {
+        ordersRepository.setOrdersStatusByActivityId(activityId,3);
     }
 
     @Override
@@ -70,12 +75,12 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public void cancelOrders(Orders orders) {
-        ordersRepository.setOrdersStatus(orders.getId(),-1);
+        ordersRepository.setOrdersStatusByOrdersId(orders.getId(),-1);
     }
 
     @Override
     public void payOrders(Integer ordersId, Date payDate) {
-        ordersRepository.setOrdersStatus(ordersId,1);
+        ordersRepository.setOrdersStatusByOrdersId(ordersId,1);
         ordersRepository.setOrdersPayDate(ordersId,payDate);
     }
 

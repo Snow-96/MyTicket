@@ -28,6 +28,10 @@ public class Activity {
     private Integer totalFirstClassSeats;
     private Integer totalSecondClassSeats;
     private Integer totalThirdClassSeats;
+    /**
+     * 活动状态 0代表进行中，1代表已配票，2代表已检票
+     */
+    private Integer activityStatus;
 
     public Integer getId() {
         return id;
@@ -165,5 +169,13 @@ public class Activity {
 
     public void setTotalThirdClassSeats(Integer totalThirdClassSeats) {
         this.totalThirdClassSeats = totalThirdClassSeats;
+    }
+
+    public Integer getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(Integer activityStatus) {
+        this.activityStatus = activityStatus;
     }
 }

@@ -70,4 +70,10 @@ public interface StadiumService {
      * @return map信息
      */
     Map<String,String> distributeTicketsForActivity(Integer activityId);
+
+    /**
+     * 为活动检票
+     * @param activityId 活动ID
+     */
+    void checkTicketsForActivity(Integer activityId);
 }

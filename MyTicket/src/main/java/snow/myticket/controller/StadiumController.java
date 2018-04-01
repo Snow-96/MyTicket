@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import snow.myticket.bean.Activity;
+import snow.myticket.bean.Orders;
 import snow.myticket.bean.Stadium;
 import snow.myticket.service.ActivityService;
+import snow.myticket.service.OrdersService;
 import snow.myticket.service.StadiumService;
 import snow.myticket.tool.VOHelper;
 import snow.myticket.vo.ActivityVO;
+import snow.myticket.vo.OrdersVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -24,12 +27,14 @@ import java.util.Map;
 public class StadiumController {
     private final StadiumService stadiumService;
     private final ActivityService activityService;
+    private final OrdersService ordersService;
     private final VOHelper voHelper;
 
     @Autowired
-    public StadiumController(StadiumService stadiumService, ActivityService activityService, VOHelper voHelper) {
+    public StadiumController(StadiumService stadiumService, ActivityService activityService, OrdersService ordersService, VOHelper voHelper) {
         this.stadiumService = stadiumService;
         this.activityService = activityService;
+        this.ordersService = ordersService;
         this.voHelper = voHelper;
     }
 
@@ -63,6 +68,42 @@ public class StadiumController {
         model.addAttribute("activityList",activityVOList);
 
         return "stadiumActivity";
+    }
+
+    @RequestMapping("/stadiumOrders")
+    public String getStadiumOrders(Model model, HttpServletRequest httpServletRequest){
+        String stadiumCode = ((Stadium)httpServletRequest.getSession(false).getAttribute("stadium")).getCode();
+
+        List<Orders> ordersList = ordersService.getStadiumOrders(stadiumCode);
+        List<OrdersVO> ordersVOList = new ArrayList<>();
+
+        for(Orders orders : ordersList)
+            ordersVOList.add(voHelper.ordersConvert(orders));
+
+        model.addAttribute("ordersList",ordersVOList);
+
+        return "stadiumOrders";
+    }
+
+    @RequestMapping("/stadiumTicket")
+    public String getStadiumTicket(Model model, HttpServletRequest httpServletRequest){
+        String stadiumCode = ((Stadium)httpServletRequest.getSession(false).getAttribute("stadium")).getCode();
+        List<Activity> activitiesNeedChecked = activityService.getAllActivitiesNeedChecked(stadiumCode);
+        List<Activity> activitiesNeedDistributed = activityService.getAllActivitiesNeedDistributed(stadiumCode);
+
+        List<ActivityVO> activityVOListChecked = new ArrayList<>();
+        List<ActivityVO> activityVOListDistributed = new ArrayList<>();
+
+        for(Activity activity : activitiesNeedChecked)
+            activityVOListChecked.add(voHelper.activityConvert(activity));
+
+        for(Activity activity : activitiesNeedDistributed)
+            activityVOListDistributed.add(voHelper.activityConvert(activity));
+
+        model.addAttribute("checkedList",activityVOListChecked);
+        model.addAttribute("distributedList",activityVOListDistributed);
+
+        return "stadiumTicket";
     }
 
     @RequestMapping("/checkModifyStatus")
@@ -106,6 +147,36 @@ public class StadiumController {
         Map<String,String> result = new HashMap<>();
         try {
             stadiumService.releaseActivity(activity);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/distributeTicketsForActivity")
+    @ResponseBody
+    public Map<String,String> distributeTicketsForActivity(@RequestParam Integer activityId){
+        Map<String,String> result = new HashMap<>();
+        try {
+            result = stadiumService.distributeTicketsForActivity(activityId);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/checkTicketsForActivity")
+    @ResponseBody
+    public Map<String,String> checkTicketsForActivity(@RequestParam Integer activityId){
+        Map<String,String> result = new HashMap<>();
+        try {
+            stadiumService.checkTicketsForActivity(activityId);
         }catch (Exception e){
             result.put("result","fail");
             result.put("message","Server Error");

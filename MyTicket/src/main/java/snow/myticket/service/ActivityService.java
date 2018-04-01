@@ -34,6 +34,20 @@ public interface ActivityService {
     List<Activity> getAllActivities();
 
     /**
+     * 得到某一场馆所有待检票的活动
+     * @param stadiumCode 场馆编码
+     * @return 活动列表
+     */
+    List<Activity> getAllActivitiesNeedChecked(String stadiumCode);
+
+    /**
+     * 得到某一场馆所有待配票的活动
+     * @param stadiumCode 场馆编码
+     * @return 活动列表
+     */
+    List<Activity> getAllActivitiesNeedDistributed(String stadiumCode);
+
+    /**
      * 根据场馆编码获取场馆举办的所有活动
      * @param stadiumCode 场馆编码
      * @return 活动列表
@@ -41,19 +55,16 @@ public interface ActivityService {
     List<Activity> getActivitiesByStadiumCode(String stadiumCode);
 
     /**
-     * 根据举办时间范围，获取所有的活动
-     * @param start 起始时间
-     * @param end 结束时间
-     * @return 活动列表
+     * 设置活动为已检票
+     * @param activityId 活动ID
      */
-    List<Activity> getActivitiesByDate(Date start, Date end);
+    void setActivityChecked(Integer activityId);
 
     /**
-     * 根据类型，获取所有活动
-     * @param type 类型
-     * @return 活动列表
+     * 设置活动为已配票
+     * @param activityId 活动ID
      */
-    List<Activity> getActivitiesByType(String type);
+    void setActivityDistributed(Integer activityId);
 
     /**
      * 增加座位

@@ -162,9 +162,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Integer convertCoupons(Coupon coupon, Integer amount) {
-        //记录最后会员积分
-        int currentPoints = 0;
+    public void convertCoupons(Coupon coupon, Integer amount) {
         //设置过期时间
         Date now = new Date();
         Calendar c = Calendar.getInstance();
@@ -176,11 +174,10 @@ public class MemberServiceImpl implements MemberService {
         coupon.setStatus(0);
 
         for(int i=0;i<amount;i++){
-            currentPoints = deductPoints(coupon.getMemberId(),coupon.getNeedPoints());
+            deductPoints(coupon.getMemberId(),coupon.getNeedPoints());
             couponService.addCoupon(coupon);
         }
 
-        return currentPoints;
     }
 
     private void upgrade(Integer memberId) {
@@ -191,9 +188,8 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.addPoints(memberId,point);
     }
 
-    private Integer deductPoints(Integer memberId, int point) {
+    private void deductPoints(Integer memberId, int point) {
         memberRepository.deductPoints(memberId,point);
-        return memberRepository.findById(memberId).getPoint();
     }
 
     private void deductBalance(Integer memberId, Double sum) {

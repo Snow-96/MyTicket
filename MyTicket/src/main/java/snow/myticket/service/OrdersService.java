@@ -54,7 +54,13 @@ public interface OrdersService {
     void setInvalidOrdersCanceled(Integer ordersId);
 
     /**
-     * 为订单分配座位
+     * 设置活动订单为已检票
+     * @param activityId 活动ID
+     */
+    void setActivityOrdersChecked(Integer activityId);
+
+    /**
+     * 为订单分配座位,且设置订单座位状态为已分配
      * @param ordersId 订单ID
      * @param first 一等座位数
      * @param second 二等座位数
