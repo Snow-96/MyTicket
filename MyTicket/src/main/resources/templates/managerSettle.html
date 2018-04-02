@@ -17,8 +17,18 @@
 <div th:include="navigation::navigation"></div>
 <div th:include="managerNav::managerNavigation"></div>
 
-<div style="position: absolute; left: 8%; top: 0; width: 80%">
+<div style="position: absolute; left: 22%; top: 10px ;width: 60%">
+    <form style="margin-top: 70px;margin-left: 50px;margin-right: 50px" class="uk-form-horizontal uk-margin-large">
+        <div class="uk-margin">
+            <label style="color: #999999" class="uk-form-label">平台总收入</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" type="text" th:value="${income}" disabled>
+            </div>
+        </div>
+    </form>
+</div>
 
+<div style="position: absolute; left: 8%; top: 40px; width: 80%">
     <table style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 200px" class="uk-table uk-table-justify uk-table-divider">
         <thead>
         <tr>

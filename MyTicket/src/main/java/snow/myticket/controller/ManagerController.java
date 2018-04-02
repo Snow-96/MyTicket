@@ -62,6 +62,7 @@ public class ManagerController {
             ordersVOList.add(voHelper.ordersConvert(orders));
 
         model.addAttribute("ordersList",ordersVOList);
+        model.addAttribute("income",managerService.getManager("123").getIncome());
         return "managerSettle";
     }
 
