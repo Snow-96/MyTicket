@@ -37,6 +37,11 @@ public class StadiumServiceImpl implements StadiumService {
     }
 
     @Override
+    public List<Stadium> getAllStadiums() {
+        return stadiumRepository.findByStatus(1);
+    }
+
+    @Override
     public List<Stadium> getStadiumApply() {
         return stadiumRepository.findByStatus(0);
     }

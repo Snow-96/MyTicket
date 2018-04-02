@@ -54,6 +54,11 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public Integer getOrdersAmountByStatus(Integer status) {
+        return ordersRepository.findByStatus(status).size();
+    }
+
+    @Override
     public boolean checkOrdersValid(Integer ordersId) {
         return ordersRepository.findById(ordersId).getStatus() != -1;
     }

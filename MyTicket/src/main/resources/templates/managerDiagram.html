@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManagerDiagram</title>
+
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/css/uikit-custom.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/echarts.min.js"></script>
+
+</head>
+<body>
+
+<div th:include="navigation::navigation"></div>
+<div th:include="managerNav::managerNavigation"></div>
+
+<div id="pieDiagramStadium" style="position: absolute; left: 30%; top: 90px; width: 60%;height: 50%"></div>
+<div id="pieDiagramOrders" style="position: absolute; left: 30%; top: 600px; width: 60%;height: 50%"></div>
+
+<script th:inline="javascript">
+    var pieStadium = echarts.init(document.getElementById('pieDiagramStadium'));
+
+    var pieStadiumList = [[${pieStadiumList}]];
+
+    var pieStadiumKey = [];
+    var pieStadiumData = [];
+    $.each(pieStadiumList,function (key, value) {
+        pieStadiumKey.push(key);
+        pieStadiumData.push({'value':value,'name':key});
+    });
+
+    option1 = {
+        title : {
+            text: '场馆订单比例',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: pieStadiumKey
+        },
+        series : [
+            {
+                name: '场馆名称',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:pieStadiumData,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    pieStadium.setOption(option1);
+
+
+    var pieOrders = echarts.init(document.getElementById('pieDiagramOrders'));
+
+    var pieOrdersList = [[${pieOrdersList}]];
+
+    var pieOrdersKey = [];
+    var pieOrdersData = [];
+    $.each(pieOrdersList,function (key, value) {
+        pieOrdersKey.push(key);
+        pieOrdersData.push({'value':value,'name':key});
+    });
+
+    option2 = {
+        title : {
+            text: '平台订单比例',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: pieOrdersKey
+        },
+        series : [
+            {
+                name: '订单状态',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:pieOrdersData,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    pieOrders.setOption(option2);
+
+</script>
+
+</body>
+</html>

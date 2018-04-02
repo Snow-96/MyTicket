@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import snow.myticket.bean.Orders;
+import snow.myticket.bean.Stadium;
 import snow.myticket.service.ManagerService;
 import snow.myticket.service.OrdersService;
 import snow.myticket.service.StadiumService;
@@ -60,6 +61,26 @@ public class ManagerController {
 
         model.addAttribute("ordersList",ordersVOList);
         return "managerSettle";
+    }
+
+    @RequestMapping("/managerDiagram")
+    public String getManagerDiagram(Model model){
+        Map<String,Integer> stadiumOrdersAmount = new HashMap<>();
+        Map<String,Integer> ordersStatusAmount = new HashMap<>();
+        List<Stadium> stadiumList = stadiumService.getAllStadiums();
+        for(Stadium stadium : stadiumList){
+            stadiumOrdersAmount.put(stadium.getName(),ordersService.getStadiumOrders(stadium.getCode()).size());
+        }
+        ordersStatusAmount.put("取消",ordersService.getOrdersAmountByStatus(-1));
+        ordersStatusAmount.put("预定",ordersService.getOrdersAmountByStatus(0));
+        ordersStatusAmount.put("支付",ordersService.getOrdersAmountByStatus(1));
+        ordersStatusAmount.put("结算",ordersService.getOrdersAmountByStatus(2));
+        ordersStatusAmount.put("完成",ordersService.getOrdersAmountByStatus(3));
+
+        model.addAttribute("pieStadiumList",stadiumOrdersAmount);
+        model.addAttribute("pieOrdersList",ordersStatusAmount);
+
+        return "managerDiagram";
     }
 
     @RequestMapping("/passStadiumApplication")

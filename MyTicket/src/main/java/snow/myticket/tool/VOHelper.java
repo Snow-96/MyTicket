@@ -89,7 +89,7 @@ public class VOHelper {
         ZoneId zoneId = ZoneId.systemDefault();
         LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
 
-        ordersVO.setExpireDate(localDateTime.plusMinutes(1).toString() + "+00:00");
+        ordersVO.setExpireDate(localDateTime.plusMinutes(1).toString());
 
         if(orders.getSeatStatus() != 0 && orders.getStatus() != -1) {
             List<Seat> seatList = seatRepository.findByOrdersId(orders.getId());

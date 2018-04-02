@@ -16,6 +16,12 @@ public interface StadiumService {
     Stadium getStadium(String stadiumCode);
 
     /**
+     * 获取所有有效场馆实体
+     * @return 场馆列表
+     */
+    List<Stadium> getAllStadiums();
+
+    /**
      * 得到所有审核中的场馆注册申请
      * @return 场馆列表
      */

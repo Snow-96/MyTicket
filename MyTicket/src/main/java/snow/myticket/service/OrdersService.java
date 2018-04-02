@@ -47,6 +47,13 @@ public interface OrdersService {
     List<Orders> getFinishedOrders();
 
     /**
+     * 根据订单状态，获取订单数量
+     * @param status 订单状态
+     * @return 订单数量
+     */
+    Integer getOrdersAmountByStatus(Integer status);
+
+    /**
      * 判断订单有效性
      * @param ordersId 订单ID
      * @return 订单是否有效，true有效，false无效
