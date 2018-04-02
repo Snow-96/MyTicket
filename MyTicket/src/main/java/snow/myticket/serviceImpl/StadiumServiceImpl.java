@@ -204,4 +204,33 @@ public class StadiumServiceImpl implements StadiumService {
     public void receiveIncome(String stadiumCode, Double income) {
         stadiumRepository.addIncome(stadiumCode,income);
     }
+
+    @Override
+    public Double calculateOffLineOrders(Orders orders, Member member) {
+        Activity activity = activityService.getActivity(orders.getActivityId());
+        double sum = activity.getFirstClassPrice() * orders.getFirstAmount() + activity.getSecondClassPrice() * orders.getSecondAmount() + activity.getThirdClassPrice() * orders.getThirdAmount();
+        if(member != null){
+            sum *= 1 - member.getLevel() * 0.03;
+        }
+        //结果保留2位小数
+        long tmp = Math.round(sum*100);
+        return tmp/100.0;
+    }
+
+    @Override
+    public void createOffLineOrders(Orders orders) {
+        //设置相应信息
+        orders.setStatus(1);
+        orders.setCouponId(-1);
+        orders.setSeatStatus(-1);
+        orders.setReserveDate(new Date());
+        orders.setPayDate(new Date());
+
+        //在活动中减去对应预定的座位数
+        activityService.deductSeats(orders.getActivityId(), 1, orders.getFirstAmount());
+        activityService.deductSeats(orders.getActivityId(), 2, orders.getSecondAmount());
+        activityService.deductSeats(orders.getActivityId(), 3, orders.getThirdAmount());
+
+        ordersService.createOrders(orders);
+    }
 }

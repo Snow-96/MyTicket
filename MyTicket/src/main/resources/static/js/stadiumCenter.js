@@ -121,6 +121,61 @@ function checkTicket(activityId) {
         });
 }
 
+function calculateOffLineOrders(stadiumCode) {
+    $.ajax({
+        type: "post",
+        url: "/calculateOffLineOrders",
+        data: JSON.stringify({
+            "memberEmail": $("#off_memberEmail").val(),
+            "activityId": $("#off_activityId").val(),
+            "stadiumCode": stadiumCode,
+            "totalPrice": $("#off_sum").val(),
+            "firstAmount": $("#off_1_amount").val(),
+            "secondAmount": $("#off_2_amount").val(),
+            "thirdAmount": $("#off_3_amount").val()
+        }),
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+            if (data.result === "success") {
+                $("#off_sum").val(data.sum);
+                $("#off_confirm_buy").attr("disabled",false);
+            } else {
+                UIkit.notification(data.message, {pos: 'bottom-center', status: 'warning'});
+            }
+        }
+
+    });
+}
+
+function createOffLineOrders(stadiumCode) {
+    $.ajax({
+        type: "post",
+        url: "/createOffLineOrders",
+        data: JSON.stringify({
+            "memberEmail": $("#off_memberEmail").val(),
+            "activityId": $("#off_activityId").val(),
+            "stadiumCode": stadiumCode,
+            "totalPrice": $("#off_sum").val(),
+            "firstAmount": $("#off_1_amount").val(),
+            "secondAmount": $("#off_2_amount").val(),
+            "thirdAmount": $("#off_3_amount").val()
+        }),
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+            if (data.result === "success") {
+                UIkit.notification("线下购买成功", {pos: 'bottom-center', status: 'warning'});
+                setTimeout(function () {
+                    window.location.href = "stadiumBuy.html";
+                }, 1200);
+            } else {
+                UIkit.notification(data.message, {pos: 'bottom-center', status: 'warning'});
+            }
+        }
+
+    });
+}
 
 $(document).ready(function(){
     $("#sing").click(function(){

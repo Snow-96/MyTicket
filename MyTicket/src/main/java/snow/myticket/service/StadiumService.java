@@ -1,8 +1,6 @@
 package snow.myticket.service;
 
-import snow.myticket.bean.Activity;
-import snow.myticket.bean.Review;
-import snow.myticket.bean.Stadium;
+import snow.myticket.bean.*;
 
 import java.util.List;
 import java.util.Map;
@@ -102,4 +100,18 @@ public interface StadiumService {
      * @param income 金额
      */
     void receiveIncome(String stadiumCode, Double income);
+
+    /**
+     * 计算线下订单价格
+     * @param orders 线下订单实体
+     * @param member 会员实体
+     * @return 总价
+     */
+    Double calculateOffLineOrders(Orders orders, Member member);
+
+    /**
+     * 生成线下订单
+     * @param orders 订单实体
+     */
+    void createOffLineOrders(Orders orders);
 }

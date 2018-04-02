@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import snow.myticket.bean.Activity;
+import snow.myticket.bean.Member;
 import snow.myticket.bean.Orders;
 import snow.myticket.bean.Stadium;
 import snow.myticket.service.ActivityService;
+import snow.myticket.service.MemberService;
 import snow.myticket.service.OrdersService;
 import snow.myticket.service.StadiumService;
 import snow.myticket.tool.VOHelper;
 import snow.myticket.vo.ActivityVO;
+import snow.myticket.vo.OffLineOrdersVO;
 import snow.myticket.vo.OrdersVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,13 +31,15 @@ public class StadiumController {
     private final StadiumService stadiumService;
     private final ActivityService activityService;
     private final OrdersService ordersService;
+    private final MemberService memberService;
     private final VOHelper voHelper;
 
     @Autowired
-    public StadiumController(StadiumService stadiumService, ActivityService activityService, OrdersService ordersService, VOHelper voHelper) {
+    public StadiumController(StadiumService stadiumService, ActivityService activityService, OrdersService ordersService, MemberService memberService,VOHelper voHelper) {
         this.stadiumService = stadiumService;
         this.activityService = activityService;
         this.ordersService = ordersService;
+        this.memberService = memberService;
         this.voHelper = voHelper;
     }
 
@@ -104,6 +109,11 @@ public class StadiumController {
         model.addAttribute("distributedList",activityVOListDistributed);
 
         return "stadiumTicket";
+    }
+
+    @RequestMapping("/stadiumBuy")
+    public String getStadiumBuy(){
+        return "stadiumBuy";
     }
 
     @RequestMapping("/checkModifyStatus")
@@ -185,5 +195,47 @@ public class StadiumController {
         result.put("result","success");
         return result;
     }
+
+    @RequestMapping("/calculateOffLineOrders")
+    @ResponseBody
+    public Map<String,String> calculateOffLineOrders(@RequestBody OffLineOrdersVO offLineOrdersVO){
+        Map<String,String> result = new HashMap<>();
+        try {
+            Member member = memberService.getMember(offLineOrdersVO.getMemberEmail());
+            if(member == null && !offLineOrdersVO.getMemberEmail().equals("")){
+                result.put("result","fail");
+                result.put("message","会员不存在");
+                return result;
+            }
+            Orders orders = new Orders(member==null?-1:member.getId(),offLineOrdersVO.getActivityId(),offLineOrdersVO.getStadiumCode(),offLineOrdersVO.getTotalPrice(),offLineOrdersVO.getFirstAmount(),offLineOrdersVO.getSecondAmount(),offLineOrdersVO.getThirdAmount());
+            Double sum = stadiumService.calculateOffLineOrders(orders,member);
+            result.put("sum",sum.toString());
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+    @RequestMapping("/createOffLineOrders")
+    @ResponseBody
+    public Map<String,String> createOffLineOrders(@RequestBody OffLineOrdersVO offLineOrdersVO){
+        Map<String,String> result = new HashMap<>();
+        try {
+            Member member = memberService.getMember(offLineOrdersVO.getMemberEmail());
+            Orders orders = new Orders(member==null?-1:member.getId(),offLineOrdersVO.getActivityId(),offLineOrdersVO.getStadiumCode(),offLineOrdersVO.getTotalPrice(),offLineOrdersVO.getFirstAmount(),offLineOrdersVO.getSecondAmount(),offLineOrdersVO.getThirdAmount());
+            stadiumService.createOffLineOrders(orders);
+        }catch (Exception e){
+            result.put("result","fail");
+            result.put("message","Server Error");
+            return result;
+        }
+        result.put("result","success");
+        return result;
+    }
+
+
 
 }

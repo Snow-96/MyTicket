@@ -38,6 +38,19 @@ public class Orders {
     private Date reserveDate;
     private Date payDate;
 
+    public Orders() {
+    }
+
+    public Orders(Integer memberId, Integer activityId, String stadiumCode, Double totalPrice, Integer firstAmount, Integer secondAmount, Integer thirdAmount) {
+        this.memberId = memberId;
+        this.activityId = activityId;
+        this.stadiumCode = stadiumCode;
+        this.totalPrice = totalPrice;
+        this.firstAmount = firstAmount;
+        this.secondAmount = secondAmount;
+        this.thirdAmount = thirdAmount;
+    }
+
     public Integer getId() {
         return id;
     }
