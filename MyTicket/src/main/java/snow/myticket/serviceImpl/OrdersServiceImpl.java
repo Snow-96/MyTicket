@@ -54,6 +54,18 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public List<Orders> getRecentOrders() {
+        //设置时间
+        Date now = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(now);
+        c.add(Calendar.DAY_OF_MONTH, -15);// 现在时刻向前15天
+        Date time = c.getTime();
+        Integer[] status = {1,2,3};
+        return ordersRepository.findByStatusInAndPayDateAfterOrderByPayDateAsc(status,time);
+    }
+
+    @Override
     public Integer getOrdersAmountByStatus(Integer status) {
         return ordersRepository.findByStatus(status).size();
     }

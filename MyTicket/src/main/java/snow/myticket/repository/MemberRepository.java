@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import snow.myticket.bean.Member;
 
+import java.util.List;
+
 public interface MemberRepository extends JpaRepository<Member,Integer>{
     /**
      * 通过邮箱，查询会员
@@ -20,6 +22,13 @@ public interface MemberRepository extends JpaRepository<Member,Integer>{
      * @return 会员实体
      */
     Member findById(Integer memberId);
+
+    /**
+     * 根据有效性，查找会员实体
+     * @param isValid 是否有效
+     * @return 会员列表
+     */
+    List<Member> findByIsValid(Integer isValid);
 
     /**
      * 取消会员资格/不可恢复

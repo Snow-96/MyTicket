@@ -47,6 +47,12 @@ public interface OrdersService {
     List<Orders> getFinishedOrders();
 
     /**
+     * 获取15天前到现在的所有订单
+     * @return 订单列表
+     */
+    List<Orders> getRecentOrders();
+
+    /**
      * 根据订单状态，获取订单数量
      * @param status 订单状态
      * @return 订单数量

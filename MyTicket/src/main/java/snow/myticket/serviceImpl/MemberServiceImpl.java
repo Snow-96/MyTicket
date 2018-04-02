@@ -7,10 +7,7 @@ import snow.myticket.repository.MemberRepository;
 import snow.myticket.repository.SeatRepository;
 import snow.myticket.service.*;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -39,6 +36,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member getMember(String email) {
         return memberRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<Member> getAllMembers() {
+        return memberRepository.findByIsValid(1);
     }
 
     @Override

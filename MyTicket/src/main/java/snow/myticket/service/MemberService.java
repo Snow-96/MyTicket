@@ -5,6 +5,7 @@ import snow.myticket.bean.Member;
 import snow.myticket.bean.Orders;
 import snow.myticket.bean.Seat;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
@@ -14,6 +15,12 @@ public interface MemberService {
      * @return 会员实体
      */
     Member getMember(String email);
+
+    /**
+     * 得到所有有效会员实体
+     * @return 会员列表
+     */
+    List<Member> getAllMembers();
 
     /**
      * 在DB中创建会员实体

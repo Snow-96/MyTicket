@@ -58,6 +58,14 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer>{
     List<Orders> findByStatusAndReserveDateBefore(Integer status, Date deadline);
 
     /**
+     * 根据状态及时间轴获取订单列表
+     * @param status 状态
+     * @param time 时间
+     * @return 订单列表
+     */
+    List<Orders> findByStatusInAndPayDateAfterOrderByPayDateAsc(Integer[] status, Date time);
+
+    /**
      * 设置订单状态
      * @param ordersId 订单ID
      * @param status 订单状态

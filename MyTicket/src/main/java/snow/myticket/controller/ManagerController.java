@@ -6,31 +6,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import snow.myticket.bean.Member;
 import snow.myticket.bean.Orders;
 import snow.myticket.bean.Stadium;
 import snow.myticket.service.ManagerService;
+import snow.myticket.service.MemberService;
 import snow.myticket.service.OrdersService;
 import snow.myticket.service.StadiumService;
 import snow.myticket.tool.VOHelper;
 import snow.myticket.vo.OrdersVO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class ManagerController {
     private final StadiumService stadiumService;
     private final ManagerService managerService;
     private final OrdersService ordersService;
+    private final MemberService memberService;
     private final VOHelper voHelper;
 
     @Autowired
-    public ManagerController(StadiumService stadiumService, ManagerService managerService, OrdersService ordersService, VOHelper voHelper) {
+    public ManagerController(StadiumService stadiumService, ManagerService managerService, OrdersService ordersService, MemberService memberService ,VOHelper voHelper) {
         this.stadiumService = stadiumService;
         this.managerService = managerService;
         this.ordersService = ordersService;
+        this.memberService = memberService;
         this.voHelper = voHelper;
     }
 
@@ -67,6 +69,8 @@ public class ManagerController {
     public String getManagerDiagram(Model model){
         Map<String,Integer> stadiumOrdersAmount = new HashMap<>();
         Map<String,Integer> ordersStatusAmount = new HashMap<>();
+        Map<String,Double> totalPlatformIncome = new LinkedHashMap<>();
+        Map<String,Integer> memberLevelAmount = new LinkedHashMap<>();
         List<Stadium> stadiumList = stadiumService.getAllStadiums();
         for(Stadium stadium : stadiumList){
             stadiumOrdersAmount.put(stadium.getName(),ordersService.getStadiumOrders(stadium.getCode()).size());
@@ -77,8 +81,35 @@ public class ManagerController {
         ordersStatusAmount.put("结算",ordersService.getOrdersAmountByStatus(2));
         ordersStatusAmount.put("完成",ordersService.getOrdersAmountByStatus(3));
 
+        List<Orders> ordersList = ordersService.getRecentOrders();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for(Orders orders : ordersList){
+            String time = sdf.format(orders.getPayDate());
+            if(!totalPlatformIncome.containsKey(time)){
+                totalPlatformIncome.put(time,orders.getTotalPrice());
+            }else {
+                double sum = totalPlatformIncome.get(time) + orders.getTotalPrice();
+                totalPlatformIncome.put(time,sum);
+            }
+        }
+
+        List<Member> memberList = memberService.getAllMembers();
+        int[] num = new int[11];
+        for(int i=0;i<11;i++)
+            num[i] = 0;
+        for(Member member: memberList){
+            num[member.getLevel()-1]++;
+            num[10]++;
+        }
+        memberLevelAmount.put("会员总数",num[10]);
+        for(int i=1;i<11;i++){
+            memberLevelAmount.put(i + "级", num[i-1]);
+        }
+
         model.addAttribute("pieStadiumList",stadiumOrdersAmount);
         model.addAttribute("pieOrdersList",ordersStatusAmount);
+        model.addAttribute("lineIncomeList",totalPlatformIncome);
+        model.addAttribute("barLevelList",memberLevelAmount);
 
         return "managerDiagram";
     }
