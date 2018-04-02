@@ -43,7 +43,7 @@ public class OrdersServiceImpl implements OrdersService {
         Date now = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(now);
-        c.add(Calendar.MINUTE, -15);// 现在时刻向前15分钟
+        c.add(Calendar.MINUTE, -1);// 现在时刻向前1分钟
         Date deadline = c.getTime();
         return ordersRepository.findByStatusAndReserveDateBefore(0,deadline);
     }

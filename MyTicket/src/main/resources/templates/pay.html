@@ -75,7 +75,7 @@
 
     <div class="uk-flex uk-flex-center">
         <button style="background-color: #faa05a; color: white; margin-right: 30px; width: 30%;" class="uk-button uk-button-default" th:onclick="'javascript:checkMemberBalance(\''+${session.member.id}+'\',\''+${ordersVO.totalPrice}+'\',\''+${ordersVO.id}+'\');'">余额支付</button>
-        <a style="background-color: #faa05a; color: white; margin-left: 30px; width: 30%;" class="uk-button uk-button-default" href="#accountLogin" uk-toggle>账号支付</a>
+        <a style="background-color: #faa05a; color: white; margin-left: 30px; width: 30%;" class="uk-button uk-button-default" href="#accountLogin" th:onclick="'javascript:checkOrdersValid(\''+${ordersVO.id}+'\');'" uk-toggle>账号支付</a>
     </div>
 
     <div id="accountLogin" class="uk-flex-top" uk-modal>

@@ -1,29 +1,42 @@
 function checkMemberBalance(memberId,sum,ordersId) {
-    $.get("/checkMemberBalance",
+    $.get("/checkOrdersValid",
         {
-            memberId: memberId,
-            sum: sum
+            ordersId: ordersId,
         },
         function(data){
             if(data){
-                $.get("/payByMemberAccount",
+                $.get("/checkMemberBalance",
                     {
-                        ordersId: ordersId,
+                        memberId: memberId,
+                        sum: sum
                     },
                     function(data){
-                        if(data.result === "success"){
-                            UIkit.notification("支付成功", {pos: 'bottom-center', status: 'warning'});
-                            setTimeout(function () {
-                                window.location.href = "memberOrders.html";
-                            }, 1200);
+                        if(data){
+                            $.get("/payByMemberAccount",
+                                {
+                                    ordersId: ordersId,
+                                },
+                                function(data){
+                                    if(data.result === "success"){
+                                        UIkit.notification("支付成功", {pos: 'bottom-center', status: 'warning'});
+                                        setTimeout(function () {
+                                            window.location.href = "memberOrders.html";
+                                        }, 1200);
+                                    }else {
+                                        UIkit.notification("Sever Error", {pos: 'bottom-center', status: 'warning'});
+                                    }
+                                })
                         }else {
-                            UIkit.notification("Sever Error", {pos: 'bottom-center', status: 'warning'});
+                            UIkit.notification("余额不足", {pos: 'bottom-center', status: 'warning'});
+                            setTimeout(function () {
+                                window.location.href = "memberInfo.html";
+                            }, 1200);
                         }
-                    })
+                    });
             }else {
-                UIkit.notification("余额不足", {pos: 'bottom-center', status: 'warning'});
+                UIkit.notification("订单已失效", {pos: 'bottom-center', status: 'warning'});
                 setTimeout(function () {
-                    window.location.href = "memberInfo.html";
+                    window.location.href = "memberOrders.html";
                 }, 1200);
             }
         });
@@ -77,4 +90,19 @@ function loginAccount(sum,ordersId) {
         }
 
     });
+}
+
+function checkOrdersValid(ordersId) {
+    $.get("/checkOrdersValid",
+        {
+            ordersId: ordersId,
+        },
+        function(data){
+            if(!data){
+                UIkit.notification("订单已失效", {pos: 'bottom-center', status: 'warning'});
+                setTimeout(function () {
+                    window.location.href = "memberOrders.html";
+                }, 1200);
+            }
+        });
 }

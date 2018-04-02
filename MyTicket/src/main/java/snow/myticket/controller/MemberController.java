@@ -286,4 +286,10 @@ public class MemberController {
     public Boolean checkAccountBalance(@RequestParam String account,@RequestParam Double sum){
         return accountService.checkAccountBalance(account,sum);
     }
+
+    @RequestMapping("/checkOrdersValid")
+    @ResponseBody
+    public Boolean checkOrdersValid(@RequestParam Integer ordersId){
+        return ordersService.checkOrdersValid(ordersId);
+    }
 }

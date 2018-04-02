@@ -62,9 +62,9 @@ public class VOHelper {
 
         String couponUseStatus;
         if(orders.getCouponId() == -1)
-            couponUseStatus = "未使用优惠券";
+            couponUseStatus = "未使用";
         else
-            couponUseStatus = "已使用优惠券";
+            couponUseStatus = "已使用";
         ordersVO.setCouponUseStatus(couponUseStatus);
 
         String payStatus;
@@ -89,7 +89,7 @@ public class VOHelper {
         ZoneId zoneId = ZoneId.systemDefault();
         LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
 
-        ordersVO.setExpireDate(localDateTime.plusMinutes(15).toString() + "+00:00");
+        ordersVO.setExpireDate(localDateTime.plusMinutes(1).toString() + "+00:00");
 
         if(orders.getSeatStatus() != 0 && orders.getStatus() != -1) {
             List<Seat> seatList = seatRepository.findByOrdersId(orders.getId());

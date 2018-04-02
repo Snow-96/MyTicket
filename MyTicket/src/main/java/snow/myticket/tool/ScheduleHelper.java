@@ -26,9 +26,9 @@ public class ScheduleHelper {
     }
 
     /**
-     * 每隔30秒，检测订单支付情况
+     * 每隔2秒，检测订单支付情况
      */
-    @Scheduled(fixedRate = SECOND * 30)
+    @Scheduled(fixedRate = SECOND * 2)
     public void checkOrders() {
         List<Orders> invalidOrders = ordersService.getInvalidOrders();
         for(Orders orders : invalidOrders){
