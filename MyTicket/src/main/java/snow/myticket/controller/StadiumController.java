@@ -51,6 +51,18 @@ public class StadiumController {
     @RequestMapping("/stadiumInfo")
     public String getStadiumInfo(Model model, HttpServletRequest httpServletRequest){
         String stadiumCode = ((Stadium)httpServletRequest.getSession(false).getAttribute("stadium")).getCode();
+        List<Orders> ordersList = ordersService.getStadiumOrders(stadiumCode);
+        Double sum = 0.0;
+        Integer pay = 0;
+        for(Orders orders : ordersList){
+            if(orders.getStatus() == 1 || orders.getStatus() == 2 || orders.getStatus() == 3) {
+                sum += orders.getTotalPrice();
+                pay++;
+            }
+        }
+        model.addAttribute("orderTotalAmount",ordersList.size());
+        model.addAttribute("orderPayAmount",pay);
+        model.addAttribute("orderSum",sum);
         model.addAttribute("stadium", stadiumService.getStadium(stadiumCode));
         return "stadiumInfo";
     }

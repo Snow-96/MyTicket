@@ -49,8 +49,20 @@ public class MemberController {
 
     @RequestMapping("/memberInfo")
     public String getMemberInfo(Model model, HttpServletRequest httpServletRequest){
-        String email = ((Member)httpServletRequest.getSession(false).getAttribute("member")).getEmail();
-        model.addAttribute("member",memberService.getMember(email));
+        Member member = (Member)httpServletRequest.getSession(false).getAttribute("member");
+        List<Orders> ordersList = ordersService.getMemberOrders(member.getId());
+        Double sum = 0.0;
+        Integer pay = 0;
+        for(Orders orders : ordersList){
+            if(orders.getStatus() == 1 || orders.getStatus() == 2 || orders.getStatus() == 3) {
+                sum += orders.getTotalPrice();
+                pay++;
+            }
+        }
+        model.addAttribute("orderTotalAmount",ordersList.size());
+        model.addAttribute("orderPayAmount",pay);
+        model.addAttribute("orderSum",sum);
+        model.addAttribute("member",memberService.getMember(member.getEmail()));
         return "memberInfo";
     }
 

@@ -50,8 +50,8 @@
         <td th:text="${ordersVO.reserveDate}"></td>
         <td th:if="${ordersVO.payStatus}=='已支付'"><a class="uk-label" href="#cancel" th:onclick="'javascript:cancelOrders(\''+${ordersVO.id}+'\');'" uk-toggle>退订</a></td>
         <td th:if="${ordersVO.payStatus}=='待支付'"><span class="uk-label" th:onclick="'javascript:payOrders(\''+${ordersVO.id}+'\');'">支付</span></td>
-        <td th:if="${ordersVO.payStatus}=='已完成'"><span class="uk-label">完成</span></td>
-        <td th:if="${ordersVO.payStatus}=='已取消'"><span class="uk-label">取消</span></td>
+        <td th:if="${ordersVO.payStatus}=='已完成'or${ordersVO.payStatus=='已结算'}"><span class="uk-label">已完成</span></td>
+        <td th:if="${ordersVO.payStatus}=='已取消'"><span class="uk-label">已取消</span></td>
     </tr>
 
     </tbody>

@@ -23,7 +23,7 @@
 <div th:include="navigation::navigation"></div>
 <div th:include="stadiumNav::stadiumNavigation"></div>
 
-<article style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 280px" class="uk-comment uk-comment-primary">
+<article style="position: absolute; left: 22% ; top: 90px ;width: 70%; height: 450px" class="uk-comment uk-comment-primary">
     <div class="uk-comment-body">
 
         <form style="margin-top: 20px" class="uk-form-horizontal uk-margin-large">
@@ -53,6 +53,27 @@
                 <label class="uk-form-label">场馆总收入</label>
                 <div class="uk-form-controls">
                     <input class="uk-input uk-form-width-large" type="text" th:value="${stadium.income}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">总订单数量</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${orderTotalAmount}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">订单成功支付次数</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${orderPayAmount}" disabled>
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label">场馆订单总额</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input uk-form-width-large" type="text" th:value="${orderSum}" disabled>
                 </div>
             </div>
 
