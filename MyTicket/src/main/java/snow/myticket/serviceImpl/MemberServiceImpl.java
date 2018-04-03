@@ -165,19 +165,26 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void convertCoupons(Coupon coupon, Integer amount) {
-        //设置过期时间
+        //过期时间
         Date now = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(now);
         c.add(Calendar.DAY_OF_MONTH, 10);// 今天+10天
         Date expirationDate = c.getTime();
-        coupon.setExpirationDate(expirationDate);
-        //设置有效
-        coupon.setStatus(0);
 
         for(int i=0;i<amount;i++){
             deductPoints(coupon.getMemberId(),coupon.getNeedPoints());
-            couponService.addCoupon(coupon);
+
+            Coupon newCoupon = new Coupon();
+            //设置过期时间
+            newCoupon.setExpirationDate(expirationDate);
+            //设置有效
+            newCoupon.setStatus(0);
+            //设置其他信息
+            newCoupon.setNeedPoints(coupon.getNeedPoints());
+            newCoupon.setDiscount(coupon.getDiscount());
+            newCoupon.setMemberId(coupon.getMemberId());
+            couponService.addCoupon(newCoupon);
         }
 
     }
